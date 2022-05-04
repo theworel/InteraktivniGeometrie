@@ -16,9 +16,10 @@ namespace InteraktivniGeometrie
             this.b2 = b2;
         }
 
-        
-        
-        
+        public Bod getStred()
+        {
+            return b1.stredUsecky(b2);
+        }
 
         public void vykresliSe(Vektor vektorX, Vektor vektorY, Vektor vektorPosun, Nakresna n)
         {

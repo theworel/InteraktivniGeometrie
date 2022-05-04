@@ -20,6 +20,18 @@ namespace InteraktivniGeometrie
         {
             return g;
         }
+
+        internal void pridejOblouky(string jmeno, string[] oblouky)
+        {
+            Cara[] obl = new Cara[oblouky.Length / 5];
+            for(int i = 0; i<oblouky.Length ; i+=5)
+            {
+                obl[i / 3] = new Oblouk(najdiBodPodleJmena(oblouky[i]), najdiBodPodleJmena(oblouky[i + 1]), najdiBodPodleJmena(oblouky[i + 2]), float.Parse(oblouky[i + 3]), float.Parse(oblouky[i + 4]));
+            }
+
+            this.prostor.pridejTvar(new Oblouky_tvar(jmeno, obl));
+        }
+
         public Nakresna(Panel p, int dimenze)
         {
             this.panel = p;

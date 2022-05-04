@@ -10,6 +10,7 @@ namespace InteraktivniGeometrie
     {
         //void vykresliSe(float[,] vektory, Nakresna n, out float[] poziceJmena);
         void vykresliSe(Vektor vektorX, Vektor vektorY, Vektor vektorPosun,  Nakresna n);
+        Bod getStred();
         //string getName();
     }
 }

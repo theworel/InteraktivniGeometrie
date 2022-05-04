@@ -23,6 +23,7 @@ namespace InteraktivniGeometrie
             allCommands.Add(new PridejBodCommand());
             allCommands.Add(new NakresliCaruCommand());
             allCommands.Add(new PridejMnohouhelnikCommand());
+            allCommands.Add(new PridejObloukCommand());
         }
 
         private void buttonEnter_Click(object sender, EventArgs e)
@@ -77,7 +78,14 @@ namespace InteraktivniGeometrie
                 foreach(Command c in allCommands)
                 {
                     if (c.getName().Equals(commandName))
-                        c.exec(args, n);
+                        try
+                        {
+                            c.exec(args, n);
+                        }
+                        catch (SpatneArgumentyPrikazuException)
+                        {
+                            Console.WriteLine("špatný počet argumentů");
+                        }
                 }
                 n.VykresliSe();
             }

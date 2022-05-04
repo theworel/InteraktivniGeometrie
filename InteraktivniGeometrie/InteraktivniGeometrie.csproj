@@ -64,12 +64,15 @@
     <Compile Include="NeplatnaUseckaException.cs" />
     <Compile Include="NesouhlasneDimenzeException.cs" />
     <Compile Include="Oblouk.cs" />
+    <Compile Include="Oblouky-tvar.cs" />
     <Compile Include="PridejBodCommand.cs" />
     <Compile Include="PridejMnohouhelnikCommand.cs" />
+    <Compile Include="PridejObloukCommand.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Prostor.cs" />
     <Compile Include="Prostor2D.cs" />
+    <Compile Include="SpatneArgumentyPrikazuException.cs" />
     <Compile Include="Tvar.cs" />
     <Compile Include="PrimaCara.cs" />
     <Compile Include="Usecka.cs" />
