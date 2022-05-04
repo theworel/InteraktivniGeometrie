@@ -57,10 +57,13 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Kruznice.cs" />
     <Compile Include="Mnohouhelnik.cs" />
     <Compile Include="NakresliCaruCommand.cs" />
     <Compile Include="Nakresna.cs" />
     <Compile Include="NeplatnaUseckaException.cs" />
+    <Compile Include="NesouhlasneDimenzeException.cs" />
+    <Compile Include="Oblouk.cs" />
     <Compile Include="PridejBodCommand.cs" />
     <Compile Include="PridejMnohouhelnikCommand.cs" />
     <Compile Include="Program.cs" />
@@ -70,6 +73,8 @@
     <Compile Include="Tvar.cs" />
     <Compile Include="PrimaCara.cs" />
     <Compile Include="Usecka.cs" />
+    <Compile Include="Vektor.cs" />
+    <Compile Include="Vektor2D.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>

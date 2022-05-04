@@ -28,7 +28,7 @@ namespace InteraktivniGeometrie
             this.nameVisible = true;
         }
 
-        public Bod2D(int x, int y)
+        public Bod2D(float x, float y)
         {
             this.souradniceX = x;
             this.souradniceY = y;
@@ -38,16 +38,36 @@ namespace InteraktivniGeometrie
             return new float[] { souradniceX, souradniceY };
         }
 
-        public float[] projekceDo2D(float[] vektorX, float[] vektorY)
+        public float[] projekceDo2D(Vektor vektorX, Vektor vektorY)
         {
-            float noveX = souradniceX * vektorX[0] + souradniceY * vektorY[0];
-            float noveY = souradniceX * vektorX[1] + souradniceY * vektorY[1];
+            float noveX = souradniceX * vektorX.getSouradnice()[0] + souradniceY * vektorY.getSouradnice()[0];
+            float noveY = souradniceX * vektorX.getSouradnice()[1] + souradniceY * vektorY.getSouradnice()[1];
             return new float[] { noveX, noveY };
         }
 
-        public float[] projekceDo3D(float[] vektorX, float[] vektorY, float[] vektorZ)
+        public float[] projekceDo3D(Vektor vektorX, Vektor vektorY, Vektor vektorZ)
         {
             throw new NotImplementedException();
+        }
+
+        public float vzdalenostOd(Bod b)
+        {
+            if (typeof(Bod2D).IsInstanceOfType(b))
+            {
+                return (float)Math.Sqrt((souradniceX - b.getSouradnice()[0]) * (souradniceX - b.getSouradnice()[0]) + (souradniceY - b.getSouradnice()[1]) * (souradniceY - b.getSouradnice()[1]));
+            }
+
+            else throw new NesouhlasneDimenzeException();
+        }
+
+        public Bod stredUsecky(Bod druhy)
+        {
+            return new Bod2D(souradniceX / 2 + druhy.getSouradnice()[0] / 2, souradniceY / 2 + druhy.getSouradnice()[1] / 2);
+        }
+
+        public Vektor vektorNaBod(Bod konec)
+        {
+            return new Vektor2D(this, konec);
         }
     }
 }

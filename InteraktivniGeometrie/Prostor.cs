@@ -11,7 +11,7 @@ namespace InteraktivniGeometrie
         Bod[] vsechnyBody();
         Tvar[] vsechnyTvary();
         void pridejBod(Bod b);
-        void pridejCaru(Cara c);
+        //void pridejCaru(Cara c);
         void pridejTvar(Tvar t);
     }
 }

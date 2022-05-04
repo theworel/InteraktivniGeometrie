@@ -9,8 +9,11 @@ namespace InteraktivniGeometrie
     public interface Bod
     {
         float[] getSouradnice();
-        float[] projekceDo2D(float[] vektorX, float[] vektorY);
-        float[] projekceDo3D(float[] vektorX, float[] vektorY, float[] vektorZ);
+        float[] projekceDo2D(Vektor vektorX, Vektor vektorY);
+        float[] projekceDo3D(Vektor vektorX, Vektor vektorY, Vektor vektorZ);
         string getName();
+        float vzdalenostOd(Bod b);
+        Bod stredUsecky(Bod druhy);
+        Vektor vektorNaBod(Bod konec);
     }
 }

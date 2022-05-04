@@ -24,10 +24,10 @@ namespace InteraktivniGeometrie
                 Console.WriteLine("neplatné zadání bodu - špatný počet souřadnic pro daný prostor");
         }
 
-        public void pridejCaru(Cara c)
+        /*public void pridejCaru(Cara c)
         {
             this.tvary.Add(c);
-        }
+        }*/
 
         public void pridejTvar(Tvar t)
         {

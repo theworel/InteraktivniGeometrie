@@ -10,12 +10,12 @@ namespace InteraktivniGeometrie
     {
         private Panel panel;
         private static System.Drawing.Graphics g;
-        private float[] vektorX;
-        private float[] vektorY;
-        private float[] vektorPosun;
+        private Vektor vektorX;
+        private Vektor vektorY;
+        private Vektor vektorPosun;
         private float otoceni;
         private Prostor prostor;
-        
+        private int dimenze;
         public Graphics getG()
         {
             return g;
@@ -23,51 +23,55 @@ namespace InteraktivniGeometrie
         public Nakresna(Panel p, int dimenze)
         {
             this.panel = p;
-            this.vektorX = new float[] { 1, 0 };
-            this.vektorY = new float[] { 0, 1 };
-            this.vektorPosun = new float[] { panel.Width/2, panel.Height/2};
+            this.vektorX = new Vektor2D (1, 0);
+            this.vektorY = new Vektor2D ( 0, 1 );
+            this.vektorPosun = new Vektor2D ( panel.Width/2, panel.Height/2);
             otoceni = 0;
             g = panel.CreateGraphics();
             prostor = new Prostor2D();
+            this.dimenze = dimenze;
             
 
         }
-        public void nakresliCaru(PrimaCara u)
+        /*public void nakresliCaru(PrimaCara u)
         {
 
-            /*float[] poziceJmena = new float[] { u.klicoveBody()[0].projekceDo2D(vektorX, vektorY)[0] + u.klicoveBody()[u.klicoveBody().Length - 1].projekceDo2D(vektorX, vektorY)[0], u.klicoveBody()[0].projekceDo2D(vektorX, vektorY)[1] + u.klicoveBody()[u.klicoveBody().Length - 1].projekceDo2D(vektorX, vektorY)[1]+5 };
+            float[] poziceJmena = new float[] { u.klicoveBody()[0].projekceDo2D(vektorX, vektorY)[0] + u.klicoveBody()[u.klicoveBody().Length - 1].projekceDo2D(vektorX, vektorY)[0], u.klicoveBody()[0].projekceDo2D(vektorX, vektorY)[1] + u.klicoveBody()[u.klicoveBody().Length - 1].projekceDo2D(vektorX, vektorY)[1]+5 };
             for (int i = 0; i< u.klicoveBody().Length-1; i++)
             {
                 nakresliUsecku(u.klicoveBody()[i], u.klicoveBody()[i + 1]);
             }
 
-            g.DrawString(u.getName(), SystemFonts.DefaultFont, Brushes.Black, poziceJmena[0], poziceJmena[1]);*/
+            g.DrawString(u.getName(), SystemFonts.DefaultFont, Brushes.Black, poziceJmena[0], poziceJmena[1]);
             float[,] vektory = new float[2, 2];
             vektory[0,0] = vektorX[0];
             vektory[0, 1] = vektorX[1];
             vektory[1, 0] = vektorY[0];
             vektory[1, 1] = vektorY[1];
             float[] poziceJmena;
-            u.vykresliSe(vektory, this, out poziceJmena);
+            u.vykresliSe(vektorX, vektorY, this, out poziceJmena);
 
             g.DrawString(u.getName(), SystemFonts.DefaultFont, Brushes.Black, poziceJmena[0] + vektorPosun[0], poziceJmena[1] + vektorPosun[1]);
-        }
+        }*/
 
-        public void nakresliUsecku(Bod a, Bod b)
+        public void nakresliUsecku(Usecka u)
         {
-            float[] poziceA = a.projekceDo2D(vektorX, vektorY);
+            /*float[] poziceA = a.projekceDo2D(vektorX, vektorY);
             float[] poziceB = b.projekceDo2D(vektorX, vektorY);
 
             g.DrawLine(System.Drawing.Pens.Black, poziceA[0] + vektorPosun[0], poziceA[1] + vektorPosun[1] , poziceB[0] + vektorPosun[0] , poziceB[1] + vektorPosun[1]);
-
+            */
+            float[,] vektory = new float[2, 2];
+            
+            u.vykresliSe(vektorX, vektorY, vektorPosun, this);
         }
 
         public void nakresliBod(Bod b)
         {
             float[] pozice = b.projekceDo2D(vektorX, vektorY);
 
-            g.DrawEllipse(System.Drawing.Pens.Black, pozice[0] - 5 +vektorPosun[0], pozice[1] - 5+vektorPosun[1], 10, 10);
-            g.DrawString(b.getName(), System.Drawing.SystemFonts.DefaultFont, System.Drawing.Brushes.Black, pozice[0] + 5+vektorPosun[0], pozice[1] + 5+vektorPosun[1]);
+            g.DrawEllipse(System.Drawing.Pens.Black, pozice[0] - 5 +vektorPosun.getSouradnice()[0], pozice[1] - 5+vektorPosun.getSouradnice()[1], 10, 10);
+            g.DrawString(b.getName(), System.Drawing.SystemFonts.DefaultFont, System.Drawing.Brushes.Black, pozice[0] + 5+vektorPosun.getSouradnice()[0], pozice[1] + 5+vektorPosun.getSouradnice()[1]);
         }
 
         public void VykresliSe()
@@ -80,21 +84,18 @@ namespace InteraktivniGeometrie
 
             foreach(Tvar t in prostor.vsechnyTvary()){
                 float[,] vektory = new float[2, 2];
-                vektory[0, 0] = vektorX[0];
-                vektory[0, 1] = vektorX[1];
-                vektory[1, 0] = vektorY[0];
-                vektory[1, 1] = vektorY[1];
-                float[] poziceJmena = t.poziceJmena(vektory);
+                
+                float[] poziceJmena = t.poziceJmena(vektorX, vektorY);
                 foreach (Cara c in t.klicoveCary())
                 {
                     
                     
-                    c.vykresliSe(vektory,this);
+                    c.vykresliSe(vektorX, vektorY, vektorPosun,this);
                     //Console.WriteLine("jmeno: " + c.getName());
                     
                 }
                 Console.WriteLine("pozice jmena: " + poziceJmena[0] + " " + poziceJmena[1]);
-                g.DrawString(t.getName(), System.Drawing.SystemFonts.DefaultFont, System.Drawing.Brushes.Black, poziceJmena[0]+vektorPosun[0], poziceJmena[1]+vektorPosun[1]);
+                g.DrawString(t.getName(), System.Drawing.SystemFonts.DefaultFont, System.Drawing.Brushes.Black, poziceJmena[0]+vektorPosun.getSouradnice()[0], poziceJmena[1]+vektorPosun.getSouradnice()[1]);
 
             }
 
@@ -124,7 +125,7 @@ namespace InteraktivniGeometrie
             {
                 bodyNaCare[i] = najdiBodPodleJmena(jmenaBodu[i]);
             }
-            this.prostor.pridejCaru(new PrimaCara(jmeno, bodyNaCare));
+            this.prostor.pridejTvar(new PrimaCara(jmeno, bodyNaCare));
         }
 
         public void pridejTvar(string jmeno, string[] jmenaBodu)
@@ -140,16 +141,16 @@ namespace InteraktivniGeometrie
 
         public void posun(float[] p)
         {
-            this.vektorPosun[0] += p[0];
-            this.vektorPosun[1] += p[1];
+            if (this.dimenze == 2)
+            {
+                this.vektorPosun = this.vektorPosun.pricti(new Vektor2D(p[0], p[1]));
+            }
         }
 
-        public void otoc(double uhel)
+        public void otoc(float uhel)
         {
-            float[] novyVektorX = new float[] { vektorX[0] * (float)Math.Cos(uhel) - vektorX[1] * (float)Math.Sin(uhel) , vektorX[0] * (float)Math.Sin(uhel) + vektorX[1] * (float)Math.Cos(uhel) };
-            float[] novyVektorY = new float[] { vektorY[0] * (float)Math.Cos(uhel) - vektorY[1] * (float)Math.Sin(uhel), vektorY[0] * (float)Math.Sin(uhel) + vektorY[1] * (float)Math.Cos(uhel) };
-            this.vektorX = novyVektorX;
-            this.vektorY = novyVektorY;
+            this.vektorX.otoc(vektorY, uhel);
+            this.vektorY.otoc(vektorX, uhel);
         }
         
     }

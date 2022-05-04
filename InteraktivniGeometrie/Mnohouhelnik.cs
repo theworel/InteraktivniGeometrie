@@ -32,22 +32,22 @@ namespace InteraktivniGeometrie
 
         public Cara[] klicoveCary()
         {
-            PrimaCara[] ret = new PrimaCara[body.Length];
+            Usecka[] ret = new Usecka[body.Length];
             for(int i=0; i<body.Length-1; i++)
             {
-                ret[i] = new PrimaCara(body[i], body[i + 1]);
+                ret[i] = new Usecka(body[i], body[i + 1]);
             }
-            ret[body.Length - 1] = new PrimaCara(body[0], body.Last());
+            ret[body.Length - 1] = new Usecka(body[0], body.Last());
             return ret;
         }
 
-        public float[] poziceJmena(float[,] vektory)
+        public float[] poziceJmena(Vektor vektorX, Vektor vektorY)
         {
             float[] ret = new float[] { 0, 0 };
             foreach(Bod b in body)
             {
-                ret[0] += b.projekceDo2D(new float[] { vektory[0, 0], vektory[0, 1] }, new float[] { vektory[1, 0], vektory[1, 1] })[0];
-                ret[1] += b.projekceDo2D(new float[] { vektory[0, 0], vektory[0, 1] }, new float[] { vektory[1, 0], vektory[1, 1] })[1];
+                ret[0] += b.projekceDo2D(vektorX, vektorY)[0];
+                ret[1] += b.projekceDo2D(vektorX, vektorY)[1];
                 Console.WriteLine(ret[0]);
                 Console.WriteLine(ret[1]);
             }

@@ -38,13 +38,13 @@ namespace InteraktivniGeometrie
 
         private void buttonTurnLeft_Click(object sender, EventArgs e)
         {
-            n.otoc(-0.1);
+            n.otoc(-0.1F);
             n.VykresliSe();
         }
 
         private void buttonTurnRight_Click(object sender, EventArgs e)
         {
-            n.otoc(0.1);
+            n.otoc(0.1F);
             n.VykresliSe();
         }
 

@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace InteraktivniGeometrie
 {
-    public interface Cara : Tvar
+    public interface Cara
     {
-        void vykresliSe(float[,] vektory, Nakresna n, out float[] poziceJmena);
-        void vykresliSe(float[,] vektory, Nakresna n);
-        string getName();
+        //void vykresliSe(float[,] vektory, Nakresna n, out float[] poziceJmena);
+        void vykresliSe(Vektor vektorX, Vektor vektorY, Vektor vektorPosun,  Nakresna n);
+        //string getName();
     }
 }
