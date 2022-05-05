@@ -40,7 +40,10 @@ namespace InteraktivniGeometrie //část elipsy vepsané obdélníku určeném b
             Console.WriteLine("velikost uhlu: " + uhel);
             try
             {
+                g.TranslateTransform(projekceStred.X, projekceStred.Y);
+                
                 g.RotateTransform(uhel);
+                g.TranslateTransform(-projekceStred.X, -projekceStred.Y);
             }catch(ArgumentException e)
             {
                 Console.WriteLine(uhel);
@@ -48,7 +51,9 @@ namespace InteraktivniGeometrie //část elipsy vepsané obdélníku určeném b
             g.DrawArc(Pens.Black, projekceStred.X -width/2, projekceStred.Y - height/2, width, height, startAngle, sweepAngle);
             try
             {
+                g.TranslateTransform(projekceStred.X, projekceStred.Y);
                 g.RotateTransform(-uhel);
+                g.TranslateTransform(-projekceStred.X, -projekceStred.Y);
             }
             catch (ArgumentException e)
             {

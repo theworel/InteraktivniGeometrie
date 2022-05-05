@@ -21,6 +21,8 @@ namespace InteraktivniGeometrie
             return g;
         }
 
+        
+
         internal void pridejOblouky(string jmeno, string[] oblouky)
         {
             Cara[] obl = new Cara[oblouky.Length / 5];
