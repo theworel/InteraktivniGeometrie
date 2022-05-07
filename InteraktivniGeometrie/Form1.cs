@@ -97,5 +97,27 @@ namespace InteraktivniGeometrie
         {
             n.vyberBod(comboBoxBody.SelectedItem.ToString());
         }
+
+        private void buttonPosunVybranyBodDolu(object sender, EventArgs e)
+        {
+
+        }
+
+        private void buttonPosunVybranyBodDoprava(object sender, EventArgs e)
+        {
+
+        }
+
+        private void buttonPosunVybranyBodNahoru(object sender, EventArgs e)
+        {
+
+        }
+
+        private void buttonPosunVybranyBodDoleva(object sender, EventArgs e)
+        {
+
+        }
+
+
     }
 }
