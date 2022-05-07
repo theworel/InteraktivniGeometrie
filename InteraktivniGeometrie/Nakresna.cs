@@ -3,6 +3,7 @@ using System.Runtime.Serialization;
 using System.Windows.Forms;
 using static System.Drawing.Graphics;
 using System.Drawing;
+
 namespace InteraktivniGeometrie
 {
     
@@ -16,6 +17,9 @@ namespace InteraktivniGeometrie
         private float otoceni;
         private Prostor prostor;
         private int dimenze;
+        private Bod selected;
+        private ComboBox comboBoxBody;
+
         public Graphics getG()
         {
             return g;
@@ -34,7 +38,7 @@ namespace InteraktivniGeometrie
             this.prostor.pridejTvar(new Oblouky_tvar(jmeno, obl));
         }
 
-        public Nakresna(Panel p, int dimenze)
+        public Nakresna(Panel p, ComboBox cb, int dimenze)
         {
             this.panel = p;
             this.vektorX = new Vektor2D (1, 0);
@@ -44,29 +48,11 @@ namespace InteraktivniGeometrie
             g = panel.CreateGraphics();
             prostor = new Prostor2D();
             this.dimenze = dimenze;
+            this.comboBoxBody = cb;
             
 
         }
-        /*public void nakresliCaru(PrimaCara u)
-        {
-
-            float[] poziceJmena = new float[] { u.klicoveBody()[0].projekceDo2D(vektorX, vektorY)[0] + u.klicoveBody()[u.klicoveBody().Length - 1].projekceDo2D(vektorX, vektorY)[0], u.klicoveBody()[0].projekceDo2D(vektorX, vektorY)[1] + u.klicoveBody()[u.klicoveBody().Length - 1].projekceDo2D(vektorX, vektorY)[1]+5 };
-            for (int i = 0; i< u.klicoveBody().Length-1; i++)
-            {
-                nakresliUsecku(u.klicoveBody()[i], u.klicoveBody()[i + 1]);
-            }
-
-            g.DrawString(u.getName(), SystemFonts.DefaultFont, Brushes.Black, poziceJmena[0], poziceJmena[1]);
-            float[,] vektory = new float[2, 2];
-            vektory[0,0] = vektorX[0];
-            vektory[0, 1] = vektorX[1];
-            vektory[1, 0] = vektorY[0];
-            vektory[1, 1] = vektorY[1];
-            float[] poziceJmena;
-            u.vykresliSe(vektorX, vektorY, this, out poziceJmena);
-
-            g.DrawString(u.getName(), SystemFonts.DefaultFont, Brushes.Black, poziceJmena[0] + vektorPosun[0], poziceJmena[1] + vektorPosun[1]);
-        }*/
+       
 
         public void nakresliUsecku(Usecka u)
         {
@@ -83,8 +69,17 @@ namespace InteraktivniGeometrie
         public void nakresliBod(Bod b)
         {
             float[] pozice = b.projekceDo2D(vektorX, vektorY);
-
-            g.DrawEllipse(System.Drawing.Pens.Black, pozice[0] - 5 +vektorPosun.getSouradnice()[0], pozice[1] - 5+vektorPosun.getSouradnice()[1], 10, 10);
+            if (selected != null)
+            {
+                if (b.getName() == selected.getName())
+                    g.DrawEllipse(System.Drawing.Pens.Red, pozice[0] - 5 + vektorPosun.getSouradnice()[0], pozice[1] - 5 + vektorPosun.getSouradnice()[1], 10, 10);
+                else
+                    g.DrawEllipse(System.Drawing.Pens.Black, pozice[0] - 5 + vektorPosun.getSouradnice()[0], pozice[1] - 5 + vektorPosun.getSouradnice()[1], 10, 10);
+            }
+            else
+            {
+                g.DrawEllipse(System.Drawing.Pens.Black, pozice[0] - 5 + vektorPosun.getSouradnice()[0], pozice[1] - 5 + vektorPosun.getSouradnice()[1], 10, 10);
+            }
             g.DrawString(b.getName(), System.Drawing.SystemFonts.DefaultFont, System.Drawing.Brushes.Black, pozice[0] + 5+vektorPosun.getSouradnice()[0], pozice[1] + 5+vektorPosun.getSouradnice()[1]);
         }
 
@@ -130,6 +125,8 @@ namespace InteraktivniGeometrie
         public void pridejBod(Bod b)
         {
             prostor.pridejBod(b);
+
+            comboBoxBody.Items.Add(b.getName());
         }
 
         public void pridejCaru(string jmeno, string[] jmenaBodu)
@@ -153,6 +150,11 @@ namespace InteraktivniGeometrie
             this.prostor.pridejTvar(new Mnohouhelnik(jmeno, bodyTvaru));
         }
 
+        public void pridejKruznici(string jmeno, string[] jmenaBodu)
+        {
+            this.prostor.pridejTvar(new Kruznice(najdiBodPodleJmena(jmenaBodu[0]), najdiBodPodleJmena(jmenaBodu[1]), najdiBodPodleJmena(jmenaBodu[2]), jmeno));
+        }
+
         public void posun(float[] p)
         {
             if (this.dimenze == 2)
@@ -165,6 +167,29 @@ namespace InteraktivniGeometrie
         {
             this.vektorX.otoc(vektorY, uhel);
             this.vektorY.otoc(vektorX, uhel);
+        }
+
+        public string[] getJmenaVsechBodu()
+        {
+
+            string[] ret = new string[this.prostor.vsechnyBody().Length];
+            for(int i=0; i<ret.Length; i++)
+            {
+                ret[i] = this.prostor.vsechnyBody()[i].getName();
+            }
+            return ret;
+        }
+
+        public void vyberBod(string jmeno)
+        {
+            try
+            {
+                selected = this.najdiBodPodleJmena(jmeno);
+                Console.WriteLine("vybrán bod " + jmeno);
+                this.VykresliSe();
+            }catch(BodNeexistujeException e){
+                Console.WriteLine("Neplatné jméno bodu: " + jmeno);
+            }
         }
         
     }

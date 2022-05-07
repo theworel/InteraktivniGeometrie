@@ -51,6 +51,7 @@
     <Compile Include="BodNeexistujeException.cs" />
     <Compile Include="Cara.cs" />
     <Compile Include="Commands\Command.cs" />
+    <Compile Include="Commands\PridejKruzniciCommand.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>

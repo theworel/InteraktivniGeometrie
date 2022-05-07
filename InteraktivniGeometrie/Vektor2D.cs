@@ -27,7 +27,7 @@ namespace InteraktivniGeometrie
 
         public Bod posun(Bod posouvany)
         {
-            return new Bod2D(posouvany.getSouradnice()[0], posouvany.getSouradnice()[1], "");
+            return new Bod2D(posouvany.getSouradnice()[0] + this.v1, posouvany.getSouradnice()[1]+ this.v2, "");
         }
 
         public Vektor pricti(Vektor druhy)

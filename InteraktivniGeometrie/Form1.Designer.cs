@@ -37,6 +37,8 @@
             this.buttonDown = new System.Windows.Forms.Button();
             this.buttonTurnLeft = new System.Windows.Forms.Button();
             this.button7 = new System.Windows.Forms.Button();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.comboBoxBody = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // panel1
@@ -50,7 +52,7 @@
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(733, 155);
+            this.textBox1.Location = new System.Drawing.Point(734, 127);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(247, 22);
             this.textBox1.TabIndex = 1;
@@ -58,7 +60,7 @@
             // 
             // buttonLeft
             // 
-            this.buttonLeft.Location = new System.Drawing.Point(747, 71);
+            this.buttonLeft.Location = new System.Drawing.Point(734, 43);
             this.buttonLeft.Name = "buttonLeft";
             this.buttonLeft.Size = new System.Drawing.Size(28, 23);
             this.buttonLeft.TabIndex = 2;
@@ -68,7 +70,7 @@
             // 
             // buttonRight
             // 
-            this.buttonRight.Location = new System.Drawing.Point(815, 72);
+            this.buttonRight.Location = new System.Drawing.Point(802, 44);
             this.buttonRight.Name = "buttonRight";
             this.buttonRight.Size = new System.Drawing.Size(28, 22);
             this.buttonRight.TabIndex = 3;
@@ -78,7 +80,7 @@
             // 
             // buttonEnter
             // 
-            this.buttonEnter.Location = new System.Drawing.Point(781, 71);
+            this.buttonEnter.Location = new System.Drawing.Point(768, 43);
             this.buttonEnter.Name = "buttonEnter";
             this.buttonEnter.Size = new System.Drawing.Size(28, 22);
             this.buttonEnter.TabIndex = 4;
@@ -88,7 +90,7 @@
             // 
             // buttonUp
             // 
-            this.buttonUp.Location = new System.Drawing.Point(781, 43);
+            this.buttonUp.Location = new System.Drawing.Point(768, 15);
             this.buttonUp.Name = "buttonUp";
             this.buttonUp.Size = new System.Drawing.Size(28, 22);
             this.buttonUp.TabIndex = 5;
@@ -98,7 +100,7 @@
             // 
             // buttonDown
             // 
-            this.buttonDown.Location = new System.Drawing.Point(781, 99);
+            this.buttonDown.Location = new System.Drawing.Point(768, 71);
             this.buttonDown.Name = "buttonDown";
             this.buttonDown.Size = new System.Drawing.Size(28, 22);
             this.buttonDown.TabIndex = 6;
@@ -108,7 +110,7 @@
             // 
             // buttonTurnLeft
             // 
-            this.buttonTurnLeft.Location = new System.Drawing.Point(747, 43);
+            this.buttonTurnLeft.Location = new System.Drawing.Point(734, 15);
             this.buttonTurnLeft.Name = "buttonTurnLeft";
             this.buttonTurnLeft.Size = new System.Drawing.Size(28, 22);
             this.buttonTurnLeft.TabIndex = 7;
@@ -118,7 +120,7 @@
             // 
             // button7
             // 
-            this.button7.Location = new System.Drawing.Point(815, 44);
+            this.button7.Location = new System.Drawing.Point(802, 16);
             this.button7.Name = "button7";
             this.button7.Size = new System.Drawing.Size(28, 22);
             this.button7.TabIndex = 8;
@@ -126,11 +128,30 @@
             this.button7.UseVisualStyleBackColor = true;
             this.button7.Click += new System.EventHandler(this.buttonTurnRight_Click);
             // 
+            // comboBox1
+            // 
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Location = new System.Drawing.Point(0, 0);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(121, 24);
+            this.comboBox1.TabIndex = 9;
+            // 
+            // comboBoxBody
+            // 
+            this.comboBoxBody.FormattingEnabled = true;
+            this.comboBoxBody.Location = new System.Drawing.Point(734, 175);
+            this.comboBoxBody.Name = "comboBoxBody";
+            this.comboBoxBody.Size = new System.Drawing.Size(247, 24);
+            this.comboBoxBody.TabIndex = 10;
+            this.comboBoxBody.SelectedIndexChanged += new System.EventHandler(this.comboBoxBody_SelectedIndexChanged);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1039, 465);
+            this.ClientSize = new System.Drawing.Size(1196, 480);
+            this.Controls.Add(this.comboBoxBody);
+            this.Controls.Add(this.comboBox1);
             this.Controls.Add(this.button7);
             this.Controls.Add(this.buttonTurnLeft);
             this.Controls.Add(this.buttonDown);
@@ -158,6 +179,8 @@
         private System.Windows.Forms.Button buttonDown;
         private System.Windows.Forms.Button buttonTurnLeft;
         private System.Windows.Forms.Button button7;
+        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.ComboBox comboBoxBody;
     }
 }
 

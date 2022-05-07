@@ -1,4 +1,5 @@
-﻿using System;
+﻿using InteraktivniGeometrie.Commands;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -18,12 +19,13 @@ namespace InteraktivniGeometrie
         {
             
             InitializeComponent();
-            n = new Nakresna(panel1, 2);
+            n = new Nakresna(panel1, comboBoxBody, 2);
             allCommands = new List<Command>();
             allCommands.Add(new PridejBodCommand());
             allCommands.Add(new NakresliCaruCommand());
             allCommands.Add(new PridejMnohouhelnikCommand());
             allCommands.Add(new PridejObloukCommand());
+            allCommands.Add(new PridejKruzniciCommand());
         }
 
         private void buttonEnter_Click(object sender, EventArgs e)
@@ -89,6 +91,11 @@ namespace InteraktivniGeometrie
                 }
                 n.VykresliSe();
             }
+        }
+
+        private void comboBoxBody_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            n.vyberBod(comboBoxBody.SelectedItem.ToString());
         }
     }
 }
