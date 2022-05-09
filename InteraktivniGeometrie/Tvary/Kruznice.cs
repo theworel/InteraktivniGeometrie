@@ -42,6 +42,7 @@ namespace InteraktivniGeometrie
 
             Vektor polomer1 = stred.vektorNaBod(b1);
             Vektor polomer2 = stred.vektorNaBod(b2).nakolmiK(polomer1);
+            polomer2 = polomer2.skaluj(polomer1.getDelka()/polomer2.getDelka());
 
             //ctverecOpsany = new Mnohouhelnik("", polomer1.pricti(polomer2).posun(stred), polomer1.pricti(polomer2.skaluj(-1)).posun(stred), polomer1.skaluj(-1).pricti(polomer2).posun(stred), polomer1.skaluj(-1).pricti(polomer2).skaluj(-1).posun(stred));
 

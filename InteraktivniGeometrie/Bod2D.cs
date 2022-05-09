@@ -69,5 +69,11 @@ namespace InteraktivniGeometrie
         {
             return new Vektor2D(this, konec);
         }
+
+        public void posun(Vektor vPosun)
+        {
+            this.souradniceX += vPosun.getSouradnice()[0];
+            this.souradniceY += vPosun.getSouradnice()[1];
+        }
     }
 }

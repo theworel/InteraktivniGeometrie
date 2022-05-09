@@ -100,22 +100,22 @@ namespace InteraktivniGeometrie
 
         private void buttonPosunVybranyBodDolu(object sender, EventArgs e)
         {
-
+            n.posunVybranyBod(0, 5F);
         }
 
         private void buttonPosunVybranyBodDoprava(object sender, EventArgs e)
         {
-
+            n.posunVybranyBod(5f, 0);
         }
 
         private void buttonPosunVybranyBodNahoru(object sender, EventArgs e)
         {
-
+            n.posunVybranyBod(0, -5f);
         }
 
         private void buttonPosunVybranyBodDoleva(object sender, EventArgs e)
         {
-
+            n.posunVybranyBod(-5f, 0);
         }
 
 

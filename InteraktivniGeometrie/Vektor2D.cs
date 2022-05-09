@@ -79,9 +79,17 @@ namespace InteraktivniGeometrie
             float[] prvniRadek = new float[] { v1, druhy.getSouradnice()[0], pocatek1.getSouradnice()[0] - pocatek2.getSouradnice()[0] };
             float[] druhyRadek = new float[] { v2, druhy.getSouradnice()[1], pocatek1.getSouradnice()[1] - pocatek2.getSouradnice()[1] };
 
+            for (int i = 0; i < 3; i++)
+                Console.Write(prvniRadek[i] + " ");
+            Console.WriteLine("prvni radek");
+
+            for (int i = 0; i < 3; i++)
+                Console.Write(druhyRadek[i] + " ");
+            Console.WriteLine("druhy radek");
+
             float pomer = v2 / v1;
             for(int i=0; i<3; i++)
-                druhyRadek[0] = druhyRadek[0] - pomer * prvniRadek[0];
+                druhyRadek[i] = druhyRadek[i] - pomer * prvniRadek[i];
             float b = druhyRadek[2] / druhyRadek[1];
 
             float a = (prvniRadek[2] - b * prvniRadek[1]) / prvniRadek[0];
@@ -98,7 +106,7 @@ namespace InteraktivniGeometrie
 
             float pomer = v2 / v1;
             for (int i = 0; i < 3; i++)
-                druhyRadek[0] = druhyRadek[0] - pomer * prvniRadek[0];
+                druhyRadek[i] = druhyRadek[i] - pomer * prvniRadek[i];
             float b = druhyRadek[2] / druhyRadek[1];
 
             float a = (prvniRadek[2] - b * prvniRadek[1]) / prvniRadek[0];

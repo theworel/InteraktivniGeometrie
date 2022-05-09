@@ -142,39 +142,43 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(1011, 175);
+            this.button1.Location = new System.Drawing.Point(999, 175);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(27, 24);
+            this.button1.Size = new System.Drawing.Size(39, 24);
             this.button1.TabIndex = 11;
             this.button1.Text = "<";
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.buttonPosunVybranyBodDoleva);
             // 
             // button2
             // 
             this.button2.Location = new System.Drawing.Point(1044, 145);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(27, 24);
+            this.button2.Size = new System.Drawing.Size(39, 24);
             this.button2.TabIndex = 12;
             this.button2.Text = "/\\";
             this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.buttonPosunVybranyBodNahoru);
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(1077, 175);
+            this.button3.Location = new System.Drawing.Point(1089, 176);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(27, 24);
+            this.button3.Size = new System.Drawing.Size(39, 23);
             this.button3.TabIndex = 13;
             this.button3.Text = ">";
             this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.buttonPosunVybranyBodDoprava);
             // 
             // button4
             // 
             this.button4.Location = new System.Drawing.Point(1044, 175);
             this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(27, 24);
+            this.button4.Size = new System.Drawing.Size(39, 24);
             this.button4.TabIndex = 14;
             this.button4.Text = "\\/";
             this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.buttonPosunVybranyBodDolu);
             // 
             // Form1
             // 

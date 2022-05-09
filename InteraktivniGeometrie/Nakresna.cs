@@ -191,6 +191,13 @@ namespace InteraktivniGeometrie
                 Console.WriteLine("Neplatné jméno bodu: " + jmeno);
             }
         }
+
+        public void posunVybranyBod(float X, float Y)
+        {
+            if(selected!=null)
+                selected.posun(new Vektor2D(X, Y));
+            this.VykresliSe();
+        }
         
     }
 

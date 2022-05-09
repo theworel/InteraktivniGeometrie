@@ -12,6 +12,7 @@ namespace InteraktivniGeometrie
         float[] projekceDo2D(Vektor vektorX, Vektor vektorY);
         float[] projekceDo3D(Vektor vektorX, Vektor vektorY, Vektor vektorZ);
         string getName();
+        void posun(Vektor vPosun);
         float vzdalenostOd(Bod b);
         Bod stredUsecky(Bod druhy);
         Vektor vektorNaBod(Bod konec);
