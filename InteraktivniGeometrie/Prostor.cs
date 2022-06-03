@@ -13,5 +13,6 @@ namespace InteraktivniGeometrie
         void pridejBod(Bod b);
         //void pridejCaru(Cara c);
         void pridejTvar(Tvar t);
+        Vektor[] kanonickaBaze();
     }
 }

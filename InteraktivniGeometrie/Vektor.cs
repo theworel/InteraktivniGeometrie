@@ -20,6 +20,8 @@ namespace InteraktivniGeometrie
         Vektor nakolmiK(Vektor druhy);
         float getUhel(Vektor druhy);
         void otoc(Vektor druhyVektor, float uhel);
+        Vektor otoceny(Vektor druhyVektor, float uhel);
+        Bod prusecikSElipsou(Bod pocatek, float[] rovnice);
         
     }
 }

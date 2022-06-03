@@ -16,6 +16,12 @@ namespace InteraktivniGeometrie
             this.body = new List<Bod>();
             this.tvary = new List<Tvar>();
         }
+
+        public Vektor[] kanonickaBaze()
+        {
+            return new Vektor2D[] { new Vektor2D(1, 0), new Vektor2D(0, 1) };
+        }
+
         public void pridejBod(Bod b)
         {
             if (b.getSouradnice().Length == 2)

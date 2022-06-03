@@ -75,5 +75,19 @@ namespace InteraktivniGeometrie
             this.souradniceX += vPosun.getSouradnice()[0];
             this.souradniceY += vPosun.getSouradnice()[1];
         }
+
+        public bool jeStejnyJako(Bod druhy)
+        {
+            return (this.vektorNaBod(druhy).getDelka() < 0.01F);
+        }
+
+        public Bod projekceNaPrimku(Bod pocatek, Vektor vektorX)
+        {
+            Vektor v = pocatek.vektorNaBod(this);
+            Vektor smer = v.nakolmiK(vektorX);
+            Bod projekce = smer.prusecikS(vektorX, this, pocatek);
+            return projekce;
+            throw new NotImplementedException();
+        }
     }
 }

@@ -3,6 +3,7 @@ using System.Runtime.Serialization;
 using System.Windows.Forms;
 using static System.Drawing.Graphics;
 using System.Drawing;
+using InteraktivniGeometrie.Tvary;
 
 namespace InteraktivniGeometrie
 {
@@ -25,7 +26,15 @@ namespace InteraktivniGeometrie
             return g;
         }
 
-        
+        public void pridejEliptickyOblouk(string jmeno, string[] jmenaBodu)
+        {
+            Bod stred = najdiBodPodleJmena(jmenaBodu[0]);
+            Bod k = najdiBodPodleJmena(jmenaBodu[3]);
+            Bod z = najdiBodPodleJmena(jmenaBodu[2]);
+            Bod dalsi = najdiBodPodleJmena(jmenaBodu[1]);
+
+            this.prostor.pridejTvar(new EliptickyOblouk(stred, dalsi, z, k, new Vektor2D(0, 1), jmeno));
+        }
 
         internal void pridejOblouky(string jmeno, string[] oblouky)
         {
@@ -124,6 +133,15 @@ namespace InteraktivniGeometrie
 
         public void pridejBod(Bod b)
         {
+            foreach (Bod p in this.prostor.vsechnyBody())
+            {
+                if (p.getName().Equals(b.getName()))
+                {
+                    MessageBox.Show("Bod s tímto jménem už existuje");
+                    return;
+                }
+            }
+            
             prostor.pridejBod(b);
 
             comboBoxBody.Items.Add(b.getName());
@@ -134,7 +152,14 @@ namespace InteraktivniGeometrie
             Bod[] bodyNaCare = new Bod[jmenaBodu.Length];
             for(int i =0; i<jmenaBodu.Length; i++)
             {
-                bodyNaCare[i] = najdiBodPodleJmena(jmenaBodu[i]);
+                try
+                {
+                    bodyNaCare[i] = najdiBodPodleJmena(jmenaBodu[i]);
+                }catch(BodNeexistujeException e)
+                {
+                    MessageBox.Show("Neplatné jméno bodu");
+                    return;
+                }
             }
             this.prostor.pridejTvar(new PrimaCara(jmeno, bodyNaCare));
         }
@@ -144,7 +169,14 @@ namespace InteraktivniGeometrie
             Bod[] bodyTvaru = new Bod[jmenaBodu.Length];
             for (int i = 0; i < jmenaBodu.Length; i++)
             {
-                bodyTvaru[i] = najdiBodPodleJmena(jmenaBodu[i]);
+                try
+                {
+                    bodyTvaru[i] = najdiBodPodleJmena(jmenaBodu[i]);
+                }catch(BodNeexistujeException e)
+                {
+                    MessageBox.Show("Neplatné jméno bodu");
+                    return;
+                }
             }
 
             this.prostor.pridejTvar(new Mnohouhelnik(jmeno, bodyTvaru));
@@ -194,8 +226,40 @@ namespace InteraktivniGeometrie
 
         public void posunVybranyBod(float X, float Y)
         {
-            if(selected!=null)
-                selected.posun(new Vektor2D(X, Y));
+            if (selected != null)
+            {
+
+                //(selected.1 + ?.1)*vX.1 + (selected.2 + ?.2)*vY.1 = X + selected.1*vX.1 + selected.2*vY.1 
+                //(selected.1 + ?.1)*vX.2 + (selected.2 + ?.2)*vY.2 = Y + selected.1*vX.2 + selected.2*vY.2 
+                //?.1*vX.1 + ?.2*vY.1 = X
+                //?.1*vX.2 + ?.2*vY.2 = Y
+
+                float[] prvniRadek = new float[] { vektorX.getSouradnice()[0], vektorY.getSouradnice()[0], X };
+                float[] druhyRadek = new float[] { vektorX.getSouradnice()[1], vektorY.getSouradnice()[1], Y};
+                try
+                {
+                    float pomer = vektorX.getSouradnice()[1] / vektorX.getSouradnice()[0];
+                    for (int i = 0; i < 3; i++)
+                    {
+                        druhyRadek[i] = druhyRadek[i] - prvniRadek[i] * pomer;
+                    }
+
+                    float posunutiY = druhyRadek[2] / druhyRadek[1];
+                    float posunutiX = (prvniRadek[2] - posunutiY * prvniRadek[1]) / prvniRadek[0];
+                    selected.posun(new Vektor2D(posunutiX, posunutiY));
+                }
+                catch(DivideByZeroException e)
+                {
+                    float posunutiX = prvniRadek[2] / prvniRadek[1];
+                    float posunutiY = (druhyRadek[2] - posunutiX * druhyRadek[1]) / druhyRadek[0];
+                    selected.posun(new Vektor2D(posunutiX, posunutiY));
+                }
+
+                
+                
+            }
+            //selected.posun(vektorX.skaluj(X).pricti(vektorY.skaluj(Y)));
+            Console.WriteLine("X: " + selected.projekceDo2D(vektorX, vektorY)[0] + " Y: " + selected.projekceDo2D(vektorX,vektorY)[1]);
             this.VykresliSe();
         }
         

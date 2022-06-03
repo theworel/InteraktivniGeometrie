@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows.Forms;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,7 +13,14 @@ namespace InteraktivniGeometrie
         {
             if(args.Length == 3)
             {
-                n.pridejBod(new Bod2D(float.Parse(args[0]), float.Parse(args[1]), args[2]));
+                try
+                {
+                    n.pridejBod(new Bod2D(float.Parse(args[0]), float.Parse(args[1]), args[2]));
+                }
+                catch (FormatException)
+                {
+                    MessageBox.Show("Špatné zadání bodu");
+                }
             }
         }
 

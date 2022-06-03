@@ -127,5 +127,32 @@ namespace InteraktivniGeometrie
             this.v1 = newv1;
             this.v2 = newv2;
         }
+
+        public Vektor otoceny(Vektor druhyVektor, float uhel)
+        {
+            float newv1 = (float)(this.v1 * Math.Cos(uhel) - this.v2 * Math.Sin(uhel));
+            float newv2 = (float)(this.v1 * Math.Sin(uhel) + this.v2 * Math.Cos(uhel));
+
+            return new Vektor2D(newv1, newv2);
+        }
+
+        public Bod prusecikSElipsou(Bod pocatek , float[] rovnice)
+        {
+            //pro kazdy bod elipsy (x,y) plati: nr.1*x^2 + nr.2*x*y  + nr.3*y^2 + nr.4*x+nr.5*y = 1
+            //x=p1+v1*s
+            //y=p2+v2*s
+            //nr.1*(p1^2+2s*p1v1+s^2v1^2) + nr.2*(p2^2+2s*p2v2+s^2v2^2) + nr.3*(p1p2 + s*p1v2 + s*p2v1 + s^2*v1v2) + nr.4*(p1+v1*s)+nr.5*(p2+v2*s) = 1
+            //s^2(v1^2*nr.1 + v2^2*nr2 + nr3*v1v2) + s(2p1v1*nr1 + 2p2v2*nr2 + nr3*p1v2 + nr3*p2v1 + nr4v1 + nr5v2) + nr1p1^2 + nr2*p2^2 + nr3*p1p2 + nr4p1 + nr5p2 - 1 = 0
+
+            float kvadratickyClen = v1 * v1 * rovnice[0] + v2 * v2 * rovnice[2] + v1 * v2 * rovnice[1];
+            float linearniClen = 2*pocatek.getSouradnice()[0]*v1*rovnice[0] + 2*pocatek.getSouradnice()[1]*v2*rovnice[2] + rovnice[1]*(pocatek.getSouradnice()[0]*v2 + pocatek.getSouradnice()[1]*v1) + rovnice[3]*v1 +  rovnice[4]*v2;
+            //2*0 + 2*0 + 
+            float konstantniClen = rovnice[0] * pocatek.getSouradnice()[0] * pocatek.getSouradnice()[0] + rovnice[2] * pocatek.getSouradnice()[1] * pocatek.getSouradnice()[1] + rovnice[1] * pocatek.getSouradnice()[1] * pocatek.getSouradnice()[0] + rovnice[3] * pocatek.getSouradnice()[0] + rovnice[4] * pocatek.getSouradnice()[1]-1;
+
+            float s = (-linearniClen + (float)Math.Sqrt(linearniClen * linearniClen - 4 * kvadratickyClen * konstantniClen)) / 2 / kvadratickyClen;
+            return this.skaluj(s).posun(pocatek);
+
+            
+        }
     }
 }

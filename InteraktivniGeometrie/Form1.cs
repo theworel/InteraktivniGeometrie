@@ -26,6 +26,7 @@ namespace InteraktivniGeometrie
             allCommands.Add(new PridejMnohouhelnikCommand());
             allCommands.Add(new PridejObloukCommand());
             allCommands.Add(new PridejKruzniciCommand());
+            allCommands.Add(new PridejEliptickyObloukCommand());
         }
 
         private void buttonEnter_Click(object sender, EventArgs e)

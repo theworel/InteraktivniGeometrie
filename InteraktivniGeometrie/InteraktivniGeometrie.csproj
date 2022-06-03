@@ -49,8 +49,10 @@
     <Compile Include="Bod.cs" />
     <Compile Include="Bod2D.cs" />
     <Compile Include="BodNeexistujeException.cs" />
-    <Compile Include="Cara.cs" />
+    <Compile Include="Cary\Cara.cs" />
+    <Compile Include="Tvary\EliptickyOblouk.cs" />
     <Compile Include="Commands\Command.cs" />
+    <Compile Include="Commands\PridejEliptickyObloukCommand.cs" />
     <Compile Include="Commands\PridejKruzniciCommand.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
@@ -64,7 +66,7 @@
     <Compile Include="Nakresna.cs" />
     <Compile Include="NeplatnaUseckaException.cs" />
     <Compile Include="NesouhlasneDimenzeException.cs" />
-    <Compile Include="Oblouk.cs" />
+    <Compile Include="Cary\Oblouk.cs" />
     <Compile Include="Tvary\Oblouky-tvar.cs" />
     <Compile Include="Commands\PridejBodCommand.cs" />
     <Compile Include="Commands\PridejMnohouhelnikCommand.cs" />
@@ -76,7 +78,7 @@
     <Compile Include="SpatneArgumentyPrikazuException.cs" />
     <Compile Include="Tvary\Tvar.cs" />
     <Compile Include="Tvary\PrimaCara.cs" />
-    <Compile Include="Usecka.cs" />
+    <Compile Include="Cary\Usecka.cs" />
     <Compile Include="Vektor.cs" />
     <Compile Include="Vektor2D.cs" />
     <EmbeddedResource Include="Form1.resx">
