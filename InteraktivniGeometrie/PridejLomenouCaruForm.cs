@@ -119,13 +119,16 @@ namespace InteraktivniGeometrie
         private string getCommand(string command)
         {
             StringBuilder ret = new StringBuilder(command);
-            foreach (Bod b in body)
+            foreach (string b in vsechnyVybraneBody())
             {
                 ret.Append(" ");
-                ret.Append(b.getName());
+                
+                ret.Append(b);
             }
+            
             ret.Append(" ");
             ret.Append(TB_jmeno.Text);
+            return ret.ToString();
         }
 
         private void B_Enter_Click(object sender, EventArgs e)
@@ -136,11 +139,11 @@ namespace InteraktivniGeometrie
                     if (uzavrena)
                     {
 
-                        n.zapis(getCommand("NakresliCaru"));
+                        n.zapis(getCommand("PridejiMnohouhelnik"));
                         n.pridejTvar(TB_jmeno.Text, vsechnyVybraneBody());
                     }
                     else {
-                        n.zapis(getCommand("PridejMnohouhelnik"));
+                        n.zapis(getCommand("NakresliCaru"));
                         n.pridejCaru(TB_jmeno.Text, vsechnyVybraneBody());
                     }
                 this.Close();

@@ -38,7 +38,7 @@ namespace InteraktivniGeometrie
             try
             {
                 n.pridejKruznici(textBox1.Text, new string[] { comboBox1.SelectedItem.ToString(), comboBox2.SelectedItem.ToString(), comboBox3.SelectedItem.ToString() });
-
+                n.zapis("PridejKruznici " + comboBox1.SelectedItem.ToString() + " " + comboBox2.SelectedItem.ToString() + " " + comboBox3.SelectedItem.ToString() + " " + textBox1.Text);
                 this.Close();
             }
             catch (DuplicitniJmenoException)
