@@ -4,6 +4,7 @@ using System.Windows.Forms;
 using static System.Drawing.Graphics;
 using System.Drawing;
 using InteraktivniGeometrie.Tvary;
+using System.Collections.Generic;
 
 namespace InteraktivniGeometrie
 {
@@ -20,10 +21,29 @@ namespace InteraktivniGeometrie
         private int dimenze;
         private Bod selected;
         private ComboBox comboBoxBody;
+        private ComboBox comboBoxTvary;
+        private Tvar selectedTvar;
+        private List<String> history;
+        
 
         public Graphics getG()
         {
             return g;
+        }
+
+        public string jmenoVybraneho()
+        {
+            return this.selected.getName();
+        }
+
+        public string[] getHistory()
+        {
+            return this.history.ToArray();
+        }
+       
+        public Vektor[] getVektory()
+        {
+            return new Vektor[] { vektorX, vektorY, vektorPosun };
         }
 
         public void pridejEliptickyOblouk(string jmeno, string[] jmenaBodu)
@@ -47,7 +67,7 @@ namespace InteraktivniGeometrie
             this.prostor.pridejTvar(new Oblouky_tvar(jmeno, obl));
         }
 
-        public Nakresna(Panel p, ComboBox cb, int dimenze)
+        public Nakresna(Panel p, ComboBox cbBody, ComboBox cbTvary, int dimenze)
         {
             this.panel = p;
             this.vektorX = new Vektor2D (1, 0);
@@ -57,11 +77,38 @@ namespace InteraktivniGeometrie
             g = panel.CreateGraphics();
             prostor = new Prostor2D();
             this.dimenze = dimenze;
-            this.comboBoxBody = cb;
-            
+            cbBody.Items.Clear();
+            cbTvary.Items.Clear();
+            this.comboBoxBody = cbBody;
+            cbBody.Items.Add("");
+            this.comboBoxTvary = cbTvary;
+            cbTvary.Items.Add("");
+            this.history = new List<String>();
 
         }
-       
+
+        public Nakresna(Panel p, ComboBox cbBody, ComboBox cbTvary, int dimenze, List<String> history)
+        {
+            this.panel = p;
+            this.vektorX = new Vektor2D(1, 0);
+            this.vektorY = new Vektor2D(0, 1);
+            this.vektorPosun = new Vektor2D(panel.Width / 2, panel.Height / 2);
+            otoceni = 0;
+            g = panel.CreateGraphics();
+            prostor = new Prostor2D();
+            this.dimenze = dimenze;
+            cbBody.Items.Clear();
+            cbTvary.Items.Clear();
+            this.comboBoxBody = cbBody;
+            cbBody.Items.Add("");
+            this.comboBoxTvary = cbTvary;
+            cbTvary.Items.Add("");
+            this.history = history;
+
+        }
+
+
+
 
         public void nakresliUsecku(Usecka u)
         {
@@ -92,6 +139,12 @@ namespace InteraktivniGeometrie
             g.DrawString(b.getName(), System.Drawing.SystemFonts.DefaultFont, System.Drawing.Brushes.Black, pozice[0] + 5+vektorPosun.getSouradnice()[0], pozice[1] + 5+vektorPosun.getSouradnice()[1]);
         }
 
+        internal void zapis(string command)
+        {
+            history.Add(command);
+
+        }
+
         public void VykresliSe()
         {
             panel.Refresh();
@@ -106,15 +159,19 @@ namespace InteraktivniGeometrie
                 float[] poziceJmena = t.poziceJmena(vektorX, vektorY);
                 foreach (Cara c in t.klicoveCary())
                 {
-                    
-                    
-                    c.vykresliSe(vektorX, vektorY, vektorPosun,this);
+
+                    if (!t.Equals(selectedTvar))
+                        c.vykresliSe(vektorX, vektorY, vektorPosun, this);
+                    else
+                        c.vykresliSeSBarvou(vektorX, vektorY, vektorPosun, this, Pens.Red);
                     //Console.WriteLine("jmeno: " + c.getName());
                     
                 }
-                Console.WriteLine("pozice jmena: " + poziceJmena[0] + " " + poziceJmena[1]);
-                g.DrawString(t.getName(), System.Drawing.SystemFonts.DefaultFont, System.Drawing.Brushes.Black, poziceJmena[0]+vektorPosun.getSouradnice()[0], poziceJmena[1]+vektorPosun.getSouradnice()[1]);
-
+                //Console.WriteLine("pozice jmena: " + poziceJmena[0] + " " + poziceJmena[1]);
+                if(!t.Equals(selectedTvar))
+                    g.DrawString(t.getName(), System.Drawing.SystemFonts.DefaultFont, System.Drawing.Brushes.Black, poziceJmena[0]+vektorPosun.getSouradnice()[0], poziceJmena[1]+vektorPosun.getSouradnice()[1]);
+                else
+                    g.DrawString(t.getName(), System.Drawing.SystemFonts.DefaultFont, System.Drawing.Brushes.Red, poziceJmena[0] + vektorPosun.getSouradnice()[0], poziceJmena[1] + vektorPosun.getSouradnice()[1]);
             }
 
         }
@@ -129,6 +186,19 @@ namespace InteraktivniGeometrie
             }
 
             throw new BodNeexistujeException();
+        }
+
+        public Tvar najdiTvarPodleJmena(string name)
+        {
+            foreach(Tvar t in this.prostor.vsechnyTvary())
+            {
+                if (t.getName().Equals(name))
+                {
+                    return t;
+                }
+            }
+
+            throw new TvarNeexistujeException();
         }
 
         public void pridejBod(Bod b)
@@ -147,8 +217,41 @@ namespace InteraktivniGeometrie
             comboBoxBody.Items.Add(b.getName());
         }
 
+        public void odeberBod(string jmeno)
+        {
+            
+            this.comboBoxBody.Items.Remove(jmeno);
+            this.comboBoxTvary.Items.Clear();
+            comboBoxTvary.Items.Add("");
+            this.prostor.odeberBod(najdiBodPodleJmena(jmeno));
+            foreach (Tvar t in prostor.vsechnyTvary())
+            {
+                comboBoxTvary.Items.Add(t.getName());
+            }
+            comboBoxBody.SelectedIndex = 0;
+            
+            this.VykresliSe();
+
+        }
+
+        public void odeberTvar(string jmeno)
+        {
+            this.prostor.odeberTvar(najdiTvarPodleJmena(jmeno));
+            this.comboBoxTvary.Items.Remove(jmeno);
+            comboBoxTvary.SelectedIndex = 0;
+            this.VykresliSe();
+        }
+
         public void pridejCaru(string jmeno, string[] jmenaBodu)
         {
+            foreach (Tvar t in this.prostor.vsechnyTvary())
+            {
+                if (jmeno.Equals(t.getName()))
+                {
+                    MessageBox.Show("Tvar s tímto jménem už existuje");
+                    return;
+                }
+            }
             Bod[] bodyNaCare = new Bod[jmenaBodu.Length];
             for(int i =0; i<jmenaBodu.Length; i++)
             {
@@ -162,10 +265,19 @@ namespace InteraktivniGeometrie
                 }
             }
             this.prostor.pridejTvar(new PrimaCara(jmeno, bodyNaCare));
+            comboBoxTvary.Items.Add(jmeno);
         }
 
         public void pridejTvar(string jmeno, string[] jmenaBodu)
         {
+            foreach (Tvar t in this.prostor.vsechnyTvary())
+            {
+                if (jmeno.Equals(t.getName()))
+                {
+                    MessageBox.Show("Tvar s tímto jménem už existuje");
+                    return;
+                }
+            }
             Bod[] bodyTvaru = new Bod[jmenaBodu.Length];
             for (int i = 0; i < jmenaBodu.Length; i++)
             {
@@ -180,11 +292,21 @@ namespace InteraktivniGeometrie
             }
 
             this.prostor.pridejTvar(new Mnohouhelnik(jmeno, bodyTvaru));
+            comboBoxTvary.Items.Add(jmeno);
         }
 
         public void pridejKruznici(string jmeno, string[] jmenaBodu)
         {
+            foreach (Tvar t in this.prostor.vsechnyTvary())
+            {
+                if (jmeno.Equals(t.getName()))
+                {
+                    MessageBox.Show("Tvar s tímto jménem už existuje");
+                    return;
+                }
+            }
             this.prostor.pridejTvar(new Kruznice(najdiBodPodleJmena(jmenaBodu[0]), najdiBodPodleJmena(jmenaBodu[1]), najdiBodPodleJmena(jmenaBodu[2]), jmeno));
+            comboBoxTvary.Items.Add(jmeno);
         }
 
         public void posun(float[] p)
@@ -212,15 +334,50 @@ namespace InteraktivniGeometrie
             return ret;
         }
 
+        public string[] getJmenaVsechTvaru()
+        {
+            string[] ret = new string[this.prostor.vsechnyTvary().Length];
+            for(int i=0; i<ret.Length; i++)
+            {
+                ret[i] = this.prostor.vsechnyTvary()[i].getName();
+            }
+            return ret;
+        }
+
         public void vyberBod(string jmeno)
         {
+            if (jmeno.Length == 0)
+            {
+                selected = null;
+                this.VykresliSe();
+                return;
+            }
             try
             {
                 selected = this.najdiBodPodleJmena(jmeno);
-                Console.WriteLine("vybrán bod " + jmeno);
+                
                 this.VykresliSe();
             }catch(BodNeexistujeException e){
-                Console.WriteLine("Neplatné jméno bodu: " + jmeno);
+                MessageBox.Show("Neplatné jméno bodu: " + jmeno);
+            }
+        }
+
+        public void vyberTvar(string jmeno)
+        {
+            if(jmeno.Length == 0)
+            {
+                selected = null;
+                this.VykresliSe();
+                return;
+            }
+            try
+            {
+                selectedTvar = this.najdiTvarPodleJmena(jmeno);
+                this.VykresliSe();
+            }
+            catch (TvarNeexistujeException)
+            {
+                MessageBox.Show("Neplatne jméno bodu");
             }
         }
 
@@ -259,7 +416,7 @@ namespace InteraktivniGeometrie
                 
             }
             //selected.posun(vektorX.skaluj(X).pricti(vektorY.skaluj(Y)));
-            Console.WriteLine("X: " + selected.projekceDo2D(vektorX, vektorY)[0] + " Y: " + selected.projekceDo2D(vektorX,vektorY)[1]);
+           
             this.VykresliSe();
         }
         

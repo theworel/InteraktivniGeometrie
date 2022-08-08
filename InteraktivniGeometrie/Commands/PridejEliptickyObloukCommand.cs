@@ -20,7 +20,7 @@ namespace InteraktivniGeometrie.Commands
 
         public string getName()
         {
-            return "pridejEliptickyOblouk";
+            return "PridejEliptickyOblouk";
         }
     }
 }

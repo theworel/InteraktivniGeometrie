@@ -74,6 +74,56 @@ namespace InteraktivniGeometrie //část elipsy vepsané obdélníku určeném b
             
         }
 
+        public void vykresliSeSBarvou(Vektor vektorX, Vektor vektorY, Vektor vektorPosun, Nakresna n, System.Drawing.Pen b)
+        {
+            System.Drawing.Graphics g = n.getG();
+
+            Console.WriteLine("top: " + top.projekceDo2D(vektorX, vektorY)[0] + " " + top.projekceDo2D(vektorX, vektorY)[1]);
+            Console.WriteLine("right: " + right.projekceDo2D(vektorX, vektorY)[0] + " " + right.projekceDo2D(vektorX, vektorY)[1]);
+            Console.WriteLine("stred: " + stred.projekceDo2D(vektorX, vektorY)[0] + " " + stred.projekceDo2D(vektorX, vektorY)[1]);
+            PointF projekceTop = new PointF(top.projekceDo2D(vektorX, vektorY)[0] + vektorPosun.getSouradnice()[0], top.projekceDo2D(vektorX, vektorY)[1] + vektorPosun.getSouradnice()[1]);
+            PointF projekceRight = new PointF(right.projekceDo2D(vektorX, vektorY)[0] + vektorPosun.getSouradnice()[0], right.projekceDo2D(vektorX, vektorY)[1] + vektorPosun.getSouradnice()[1]);
+            PointF projekceStred = new PointF(stred.projekceDo2D(vektorX, vektorY)[0] + vektorPosun.getSouradnice()[0], stred.projekceDo2D(vektorX, vektorY)[1] + vektorPosun.getSouradnice()[1]);
+            float width = (float)Math.Sqrt((projekceRight.X - projekceStred.X) * (projekceRight.X - projekceStred.X) + (projekceRight.Y - projekceStred.Y) * (projekceRight.Y - projekceStred.Y)) * 2;
+            float height = (float)Math.Sqrt((projekceTop.X - projekceStred.X) * (projekceTop.X - projekceStred.X) + (projekceTop.Y - projekceStred.Y) * (projekceTop.Y - projekceStred.Y)) * 2;
+            //float uhel = ((projekceRight.X - projekceStred.X) * vektorX.getSouradnice()[0] + (projekceRight.Y - projekceStred.Y) * vektorX.getSouradnice()[1]); //skalarni soucin vektoru osy elipsy a vektoruX nakresny
+
+            Console.WriteLine("projekceTop: " + projekceTop.X + " " + projekceTop.Y);
+            Console.WriteLine("projekceRight: " + projekceRight.X + " " + projekceRight.Y);
+            Console.WriteLine("projekceStred: " + projekceStred.X + " " + projekceStred.Y);
+            float uhel = (projekceRight.X - projekceStred.X);
+            Console.WriteLine("úhel: " + uhel);
+            uhel /= vektorX.getDelka();
+            Console.WriteLine(uhel);
+            uhel /= (float)Math.Sqrt((projekceRight.X - projekceStred.X) * (projekceRight.X - projekceStred.X) + (projekceRight.Y - projekceStred.Y) * (projekceRight.Y - projekceStred.Y));
+            Console.WriteLine("acos(" + uhel);
+            uhel = (float)Math.Acos(uhel) * 180 / (float)Math.PI;
+            Console.WriteLine("velikost uhlu: " + uhel);
+            try
+            {
+                g.TranslateTransform(projekceStred.X, projekceStred.Y);
+
+                g.RotateTransform(uhel);
+                g.TranslateTransform(-projekceStred.X, -projekceStred.Y);
+            }
+            catch (ArgumentException e)
+            {
+                Console.WriteLine(uhel);
+            }
+            g.DrawArc(b, projekceStred.X - width / 2, projekceStred.Y - height / 2, width, height, startAngle, sweepAngle);
+            try
+            {
+                g.TranslateTransform(projekceStred.X, projekceStred.Y);
+                g.RotateTransform(-uhel);
+                g.TranslateTransform(-projekceStred.X, -projekceStred.Y);
+            }
+            catch (ArgumentException e)
+            {
+                Console.WriteLine(-uhel);
+            }
+
+        }
+
         public Bod getStred()
         {
             return this.stred;

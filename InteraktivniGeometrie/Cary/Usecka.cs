@@ -28,5 +28,13 @@ namespace InteraktivniGeometrie
             PointF p2 = new PointF(b2.projekceDo2D(vektorX, vektorY)[0] + vektorPosun.getSouradnice()[0], b2.projekceDo2D(vektorX, vektorY)[1] + vektorPosun.getSouradnice()[1]);
             g.DrawLine(System.Drawing.Pens.Black, p1, p2);
         }
+
+        public void vykresliSeSBarvou(Vektor vektorX, Vektor vektorY, Vektor vektorPosun, Nakresna n, Pen b)
+        {
+            System.Drawing.Graphics g = n.getG();
+            PointF p1 = new PointF(b1.projekceDo2D(vektorX, vektorY)[0] + vektorPosun.getSouradnice()[0], b1.projekceDo2D(vektorX, vektorY)[1] + vektorPosun.getSouradnice()[1]);
+            PointF p2 = new PointF(b2.projekceDo2D(vektorX, vektorY)[0] + vektorPosun.getSouradnice()[0], b2.projekceDo2D(vektorX, vektorY)[1] + vektorPosun.getSouradnice()[1]);
+            g.DrawLine(b, p1, p2);
+        }
     }
 }

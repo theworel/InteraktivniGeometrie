@@ -8,41 +8,64 @@ namespace InteraktivniGeometrie.Tvary
 {
     class EliptickyOblouk : Tvar
     {
-        static float stredovyUhel(Bod a, Bod b, Bod stred, Vektor svislaOsa, Vektor osaDoprava)
+        static float stredovyUhel(Bod a, Bod b, Bod stred, Vektor osaDoprava, Vektor svislaOsa)
         {
+            float ret = stred.vektorNaBod(a).getUhel(stred.vektorNaBod(b)) *180/(float)Math.PI;
+            return ret;
 
             if (a.projekceNaPrimku(stred, osaDoprava).vzdalenostOd(b.projekceNaPrimku(stred, osaDoprava)) > a.projekceNaPrimku(stred, osaDoprava).vzdalenostOd(stred))//pokud A a B jsou v ruznych polkach elipsy podle svisle osy
             {
                 if (a.projekceNaPrimku(stred, svislaOsa).vzdalenostOd(b.projekceNaPrimku(stred, svislaOsa)) > a.projekceNaPrimku(stred, svislaOsa).vzdalenostOd(stred))//A a B jsou v ruznych pulkach elipsy podle vodorovne osy, tedy v opacnych kvadrantech
-                    return (stred.vektorNaBod(a).getUhel(stred.vektorNaBod(b))*180/(float) Math.PI);
 
-                return 180 - (stred.vektorNaBod(a).getUhel(osaDoprava) + stred.vektorNaBod(b).getUhel(osaDoprava)) * 180 / (float)Math.PI;
+                    ret = (stred.vektorNaBod(a).getUhel(stred.vektorNaBod(b)) * 180 / (float)Math.PI);
+                else
+                {
+                    float uhelAsOsou = stred.vektorNaBod(a).getUhel(osaDoprava) * 180 / (float)Math.PI;
+                    if (uhelAsOsou > 90)
+                        uhelAsOsou = 180 - uhelAsOsou;
+
+                    float uhelBsOsou = stred.vektorNaBod(b).getUhel(osaDoprava) * 180 / (float)Math.PI;
+                    if (uhelBsOsou > 90)
+                        uhelBsOsou = 180 - uhelBsOsou;
+                    return 180 - (uhelAsOsou + uhelBsOsou);
+                }
             }
             else {
                 if (a.projekceNaPrimku(stred, svislaOsa).vzdalenostOd(b.projekceNaPrimku(stred, svislaOsa)) > a.projekceNaPrimku(stred, svislaOsa).vzdalenostOd(stred))
+                {
 
-                    return 180 - (stred.vektorNaBod(a).getUhel(svislaOsa) + stred.vektorNaBod(b).getUhel(svislaOsa)) * 180 / (float)Math.PI;
+                    float uhelAsOsou = stred.vektorNaBod(a).getUhel(osaDoprava) * 180 / (float)Math.PI;
+                    if (uhelAsOsou > 90)
+                        uhelAsOsou = 180 - uhelAsOsou;
+
+                    float uhelBsOsou = stred.vektorNaBod(b).getUhel(osaDoprava) * 180 / (float)Math.PI;
+                    if (uhelBsOsou > 90)
+                        uhelBsOsou = 180 - uhelBsOsou;
+                    return 180 - (uhelAsOsou + uhelBsOsou);
+                }
                 else
-                    return stred.vektorNaBod(a).getUhel(stred.vektorNaBod(b)) *180/(float)Math.PI;
+                    ret = stred.vektorNaBod(a).getUhel(stred.vektorNaBod(b)) * 180 / (float)Math.PI;
             }
+            return ret;
         }
         static Bod[] seradPoSmeruHodinSeZacatkemVRight(Bod stred, Bod right, Bod top, Bod z, Bod k, Bod dalsi, Vektor vektorOsyDoprava, Vektor vektorOsyNahoru)
         {
             Bod[] ret = new Bod[3];
-            
+            float[] vzdalenosti = new float[3];
             Bod[] body = new Bod[] { z, k, dalsi };
-            
+            int i = 0;
             float vzdalenostZ = z.projekceNaPrimku(stred, vektorOsyDoprava).vzdalenostOd(right);
             if (z.projekceNaPrimku(stred, vektorOsyNahoru).vzdalenostOd(top) < stred.vzdalenostOd(top))
-                vzdalenostZ = top.vzdalenostOd(stred) * 4 - vzdalenostZ;
+                vzdalenostZ = right.vzdalenostOd(stred) * 4 - vzdalenostZ;
 
             float vzdalenostK = k.projekceNaPrimku(stred, vektorOsyDoprava).vzdalenostOd(right);
             if (k.projekceNaPrimku(stred, vektorOsyNahoru).vzdalenostOd(top) < stred.vzdalenostOd(top))
-                vzdalenostK += top.vzdalenostOd(stred) * 4 - vzdalenostK;
+                vzdalenostK = right.vzdalenostOd(stred) * 4 - vzdalenostK;
 
             float vzdalenostD = dalsi.projekceNaPrimku(stred, vektorOsyDoprava).vzdalenostOd(right);
             if (dalsi.projekceNaPrimku(stred, vektorOsyNahoru).vzdalenostOd(top) < stred.vzdalenostOd(top))
-                vzdalenostK += top.vzdalenostOd(stred) * 4 -vzdalenostD;
+                vzdalenostD = right
+                    .vzdalenostOd(stred) * 4 -vzdalenostD;
 
             if(vzdalenostK > vzdalenostD && vzdalenostD > vzdalenostZ)
             {
@@ -57,7 +80,7 @@ namespace InteraktivniGeometrie.Tvary
             if (vzdalenostD < vzdalenostK && vzdalenostK < vzdalenostZ)
                 return new Bod[] { z, dalsi, k };
             if (vzdalenostD < vzdalenostZ && vzdalenostZ < vzdalenostK)
-                return new Bod[] { z, dalsi, k };
+                return new Bod[] { k, dalsi, z };
             return ret;
         }
         
@@ -137,6 +160,62 @@ namespace InteraktivniGeometrie.Tvary
 
         public Cara[] klicoveCary()
         {
+            Bod zObraz = z.vektorNaBod(stred).skaluj(2.0F).posun(z);
+            Vektor v = k.vektorNaBod(stred).skaluj(2.0F);
+            Bod kObraz = v.posun(k);
+            Vektor posouvaciVektor = stred.vektorNaBod(new Bod2D(0, 0));
+
+            Bod[] body = new Bod[] { z, k, zObraz, kObraz, dalsi };
+            int i = 0;
+            float[][] radky = new float[5][];
+            foreach (Bod c in body)
+            {
+                Bod b = posouvaciVektor.posun(c);
+                radky[i] = new float[] { b.getSouradnice()[0] * b.getSouradnice()[0], b.getSouradnice()[0] * b.getSouradnice()[1], b.getSouradnice()[1] * b.getSouradnice()[1], b.getSouradnice()[0], b.getSouradnice()[1], 1 };
+                i++;
+
+            }
+
+            float[] normalizovanaRovnice = vyresSoustavuRovnic(5, radky); //pro kazdy bod elipsy (x,y) plati: nr.1*x^2 + nr.2*y^2 + nr.3*x*y + nr.4*x+nr.5*y = 1
+                                                                          //nr2yy + nr3xy + nr5y = 1 - nr1xx - nr4x
+                                                                          //nr2yy + (nr3x + nr5) + (nr1xx + nr4x -1) = 0
+                                                                          //D = (nr3x+nr5)^2 - 4nr2(nr1xx+nr4x-1)
+                                                                          //y = [(nr3x+nr5)^2 + sqrt(  (nr3x+nr5)^2 - 4nr2(nr1xx+nr4x-1) )]/2nr2 = 
+                                                                          //vzdalenost(stred, (x,y)) ~ (stred.1 - x)^2 + (stred.2 - y)^2
+                                                                          // vzdalenost(stred, (x, y)) ~(stred.1^2 - 2x*stred.1 + x^2) + (stred.2^2 - 2y*stred.2 + y^2)
+                                                                          // vzdalenost(stred, (x,y)) ~ (stred.1^2 - 2x*stred.1 + x^2) + stred.2^2 - 2*stred.2*([(nr3x+nr5)^2 + sqrt(  (nr3x+nr5)^2 - 4nr2(nr1xx+nr4x-1) )]/2nr2) + ([(nr3x+nr5)^2 + sqrt(  (nr3x+nr5)^2 - 4nr2(nr1xx+nr4x-1) )]/2nr2)^2
+                                                                          //vzdalenost(stred, (x,y))' = 2*stred.1 + 2x + - (2*stred.2*(nr3x+nr5)^2)' - 2*stred.2*sqrt(  (nr3x+nr5)^2 - 4nr2(nr1xx+nr4x-1) )]/2nr2)'
+
+            float uhelRotace = (float)Math.Atan((double)normalizovanaRovnice[1] / (normalizovanaRovnice[0] - normalizovanaRovnice[2])) / 2;
+
+            Vektor vektorOsy = kolmySmer.otoceny(stred.vektorNaBod(dalsi), uhelRotace);
+            Vektor vektorVodorovneOsy = stred.vektorNaBod(dalsi).nakolmiK(vektorOsy);
+            Bod right = posouvaciVektor.skaluj(-1).posun(vektorOsy.prusecikSElipsou(posouvaciVektor.posun(stred), normalizovanaRovnice)); //az sem to funguje dobre
+
+            Bod top = posouvaciVektor.skaluj(-1).posun(stred.vektorNaBod(dalsi).nakolmiK(vektorOsy).prusecikSElipsou(posouvaciVektor.posun(stred), normalizovanaRovnice));
+
+            top = top.vektorNaBod(stred).skaluj(2).posun(top);
+            Bod[] poporade = seradPoSmeruHodinSeZacatkemVRight(stred, right, top, z, k, dalsi, stred.vektorNaBod(right), stred.vektorNaBod(top));
+
+
+            float startAngle = stredovyUhel(right, poporade[0], stred, vektorOsy, stred.vektorNaBod(dalsi).nakolmiK(vektorOsy));
+            float vzdalenostZacatkuodTop = poporade[0].projekceNaPrimku(stred, stred.vektorNaBod(top)).vzdalenostOd(top);
+            float delkaSvisleOsy = stred.vzdalenostOd(top);
+            if (poporade[0].projekceNaPrimku(stred, stred.vektorNaBod(top)).vzdalenostOd(top) < stred.vzdalenostOd(top))
+            {
+                startAngle = 360 - startAngle;
+            }
+
+            float sweepAngle = stredovyUhel(z, k, stred, vektorOsy, vektorVodorovneOsy);
+            float soucetUhlu = stredovyUhel(z, dalsi, stred, vektorOsy, vektorVodorovneOsy);
+            float bdalsiUhel = stredovyUhel(k, dalsi, stred, vektorOsy, vektorVodorovneOsy);
+            soucetUhlu += bdalsiUhel;
+            if (sweepAngle < soucetUhlu-0.1F)
+                sweepAngle = 360 - sweepAngle;
+
+            Oblouk o = new Oblouk(top, right, stred, startAngle, sweepAngle);
+            //this.stred = stred;
+            this.oblouk = o;
             return new Cara[] { oblouk };
         }
 
@@ -147,11 +226,11 @@ namespace InteraktivniGeometrie.Tvary
 
         public float[] poziceJmena(Vektor vektorX, Vektor vektorY)
         {
-            return this.oblouk.getStred().getSouradnice();
+            return this.stred.getSouradnice();
         }
 
-        private Bod ohnisko1, ohnisko2, z, k;
-
+        private Bod dalsi, z, k;
+        private Vektor kolmySmer;
 
 
         public EliptickyOblouk(Bod stred, Bod dalsi, Bod z, Bod k, Vektor kolmySmer, string jmeno)
@@ -164,8 +243,11 @@ namespace InteraktivniGeometrie.Tvary
             
             this.z = z;
             this.k = k;
+            this.dalsi = dalsi;
+            this.kolmySmer = kolmySmer;
+            this.stred = stred;
 
-            Bod zObraz =z.vektorNaBod(stred).skaluj(2.0F).posun(z);
+            /*Bod zObraz =z.vektorNaBod(stred).skaluj(2.0F).posun(z);
             Vektor v = k.vektorNaBod(stred).skaluj(2.0F);
             Bod kObraz = v.posun(k);
             Vektor posouvaciVektor = stred.vektorNaBod(new Bod2D(0, 0));
@@ -212,10 +294,11 @@ namespace InteraktivniGeometrie.Tvary
            
             if(sweepAngle< stredovyUhel(z,dalsi,stred,vektorOsy,vektorVodorovneOsy) + stredovyUhel(k,dalsi,stred,vektorOsy, vektorVodorovneOsy))
                 sweepAngle = 360 - sweepAngle;
-            
-            this.stred = stred;
-            this.oblouk = o;
            
+            Oblouk o = new Oblouk(top, right, stred, startAngle, sweepAngle);
+            this.stred = stred;
+            this.oblouk = o;*/
+            
 
             
 

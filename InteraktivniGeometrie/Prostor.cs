@@ -14,5 +14,8 @@ namespace InteraktivniGeometrie
         //void pridejCaru(Cara c);
         void pridejTvar(Tvar t);
         Vektor[] kanonickaBaze();
+        Tvar[] tvarySTimtoBodem(Bod b);
+        void odeberBod(Bod b);
+        void odeberTvar(Tvar t);
     }
 }

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,11 +16,12 @@ namespace InteraktivniGeometrie
     {
         static List<Command> allCommands;
         static Nakresna n;
+        private string textFile;
         public Form1()
         {
             
             InitializeComponent();
-            n = new Nakresna(panel1, comboBoxBody, 2);
+            n = new Nakresna(panel1, comboBoxBody, CB_zvolenyTvar, 2);
             allCommands = new List<Command>();
             allCommands.Add(new PridejBodCommand());
             allCommands.Add(new NakresliCaruCommand());
@@ -27,6 +29,14 @@ namespace InteraktivniGeometrie
             allCommands.Add(new PridejObloukCommand());
             allCommands.Add(new PridejKruzniciCommand());
             allCommands.Add(new PridejEliptickyObloukCommand());
+            allCommands.Add(new PosunBodCommand());
+            B_posunBodDoleva.Enabled = false;
+            B_posunBodDolu.Enabled = false;
+            B_posunBodDoprava.Enabled = false;
+            B_posunBodNahoru.Enabled = false;
+            B_OdeberBod.Enabled = false;
+            B_OdeberTvar.Enabled = false;
+            textFile = null;
         }
 
         private void buttonEnter_Click(object sender, EventArgs e)
@@ -74,7 +84,7 @@ namespace InteraktivniGeometrie
         {
             if (e.KeyCode == Keys.Enter)
             {
-                string[] vstup = textBox1.Text.Split(' ');
+                /*string[] vstup = textBox1.Text.Split(' ');
                 string commandName = vstup[0];
                 string[] args = new string[vstup.Length - 1];
                 Array.ConstrainedCopy(vstup, 1, args, 0, args.Length);
@@ -89,36 +99,169 @@ namespace InteraktivniGeometrie
                         {
                             Console.WriteLine("špatný počet argumentů");
                         }
-                }
+                }*/
+
+                executeCommand(textBox1.Text);
                 n.VykresliSe();
             }
+        }
+
+       public void executeCommand(string command)
+        {
+            string[] vstup = command.Split(' ');
+            string commandName = vstup[0];
+            string[] args = new string[vstup.Length - 1];
+            Array.ConstrainedCopy(vstup, 1, args, 0, args.Length);
+            foreach (Command c in allCommands)
+            {
+                if (c.getName().Equals(commandName))
+                    try
+                    {
+                        c.exec(args, n);
+                        n.zapis(command);
+                        n.VykresliSe();
+                    }
+                    catch (SpatneArgumentyPrikazuException)
+                    {
+                        Console.WriteLine("špatný počet argumentů");
+                    }
+            }
+            
+            
         }
 
         private void comboBoxBody_SelectedIndexChanged(object sender, EventArgs e)
         {
             n.vyberBod(comboBoxBody.SelectedItem.ToString());
+            if(comboBoxBody.SelectedItem.ToString().Length == 0)
+            {
+                B_OdeberBod.Enabled = false;
+                B_posunBodDoleva.Enabled = false;
+                B_posunBodDolu.Enabled = false;
+                B_posunBodDoprava.Enabled = false;
+                B_posunBodNahoru.Enabled = false;
+            }
+            else
+            {
+                B_OdeberBod.Enabled = true;
+                B_posunBodDoleva.Enabled = true;
+                B_posunBodDolu.Enabled = true;
+                B_posunBodDoprava.Enabled = true;
+                B_posunBodNahoru.Enabled = true;
+            }
         }
 
         private void buttonPosunVybranyBodDolu(object sender, EventArgs e)
         {
-            n.posunVybranyBod(0, 5F);
+            string jmeno = n.jmenoVybraneho();
+            executeCommand("PosunBod 0 5 " + jmeno);
+            //n.posunVybranyBod(0, 5F);
         }
 
         private void buttonPosunVybranyBodDoprava(object sender, EventArgs e)
         {
-            n.posunVybranyBod(5f, 0);
+            string jmeno = n.jmenoVybraneho();
+            executeCommand("PosunBod 5 0 " + jmeno);
+            //n.posunVybranyBod(5f, 0);
         }
 
         private void buttonPosunVybranyBodNahoru(object sender, EventArgs e)
         {
-            n.posunVybranyBod(0, -5f);
+            string jmeno = n.jmenoVybraneho();
+            executeCommand("PosunBod 0 -5 " + jmeno);
+            //n.posunVybranyBod(0, -5f);
         }
 
         private void buttonPosunVybranyBodDoleva(object sender, EventArgs e)
         {
-            n.posunVybranyBod(-5f, 0);
+            string jmeno = n.jmenoVybraneho();
+            executeCommand("PosunBod -5 0 " + jmeno);
+            //n.posunVybranyBod(-5f, 0);
         }
 
+        private void B_pridejBod_Click(object sender, EventArgs e)
+        {
+            PridejBod_Form f2 = new PridejBod_Form(n);
+            f2.Show();
+        }
 
+        private void button1_Click(object sender, EventArgs e)
+        {
+            PridejUsecku f2 = new PridejUsecku(n);
+            f2.Show();
+        }
+
+        private void B_NovaLomenaCara_Click(object sender, EventArgs e)
+        {
+            PridejLomenouCaruForm f2 = new PridejLomenouCaruForm(n, false);
+            f2.Show();
+        }
+
+        private void B_oblouk_Click(object sender, EventArgs e)
+        {
+            PridejObloukForm f2 = new PridejObloukForm(n);
+            f2.Show();
+        }
+
+        private void B_mnohouhelnik_Click(object sender, EventArgs e)
+        {
+            PridejLomenouCaruForm f2 = new PridejLomenouCaruForm(n, true);
+            f2.Show();
+        }
+
+        private void B_kruznice_Click(object sender, EventArgs e)
+        {
+            PridejKruzniciForm f2 = new PridejKruzniciForm(n);
+            f2.Show();
+        }
+
+        private void CB_zvolenyTvar_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            n.vyberTvar(CB_zvolenyTvar.SelectedItem.ToString());
+
+            if (CB_zvolenyTvar.SelectedItem.ToString().Length == 0)
+            {
+                B_OdeberTvar.Enabled = false;
+            }
+        }
+
+        private void B_OdeberBod_Click(object sender, EventArgs e)
+        {
+            n.odeberBod(comboBoxBody.SelectedItem.ToString());
+            B_OdeberBod.Enabled = false;
+            B_posunBodDoleva.Enabled = false;
+            B_posunBodDolu.Enabled = false;
+            B_posunBodDoprava.Enabled = false;
+            B_posunBodNahoru.Enabled = false;
+        }
+
+        private void Button_uloz_Click(object sender, EventArgs e)
+        {
+            if (this.textFile == null) { 
+                SaveFileDialog dialog = new SaveFileDialog();
+
+                if (dialog.ShowDialog() == DialogResult.OK)
+                {
+                
+                    this.textFile = Path.GetFullPath(dialog.FileName);
+                }
+            }
+            File.WriteAllLines(textFile, n.getHistory());
+            
+        }
+
+        private void Button_otevri_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog dialog = new OpenFileDialog();
+            if(dialog.ShowDialog() == DialogResult.OK)
+            {
+                this.textFile = Path.GetFullPath(dialog.FileName);
+                string[] commands = File.ReadAllLines(textFile);
+                
+                n = new Nakresna(panel1, comboBoxBody, CB_zvolenyTvar, 2, new List<string>(commands));
+                foreach (string s in commands)
+                    executeCommand(s);
+            }
+        }
     }
 }

@@ -4,12 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace InteraktivniGeometrie
+namespace InteraktivniGeometrie.Exceptions
 {
-    interface Command
+    class DuplicitniJmenoException : Exception
     {
-        String getName();
-        void exec(String[] args, Nakresna n);
-        
+
     }
 }
