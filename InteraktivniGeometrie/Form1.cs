@@ -136,6 +136,7 @@ namespace InteraktivniGeometrie
             if(comboBoxBody.SelectedItem.ToString().Length == 0)
             {
                 B_OdeberBod.Enabled = false;
+                
                 B_posunBodDoleva.Enabled = false;
                 B_posunBodDolu.Enabled = false;
                 B_posunBodDoprava.Enabled = false;
@@ -144,10 +145,20 @@ namespace InteraktivniGeometrie
             else
             {
                 B_OdeberBod.Enabled = true;
-                B_posunBodDoleva.Enabled = true;
-                B_posunBodDolu.Enabled = true;
-                B_posunBodDoprava.Enabled = true;
-                B_posunBodNahoru.Enabled = true;
+                if (n.najdiBodPodleJmena(comboBoxBody.SelectedItem.ToString()).jePrusecik())
+                {
+                    B_posunBodDoleva.Enabled = false;
+                    B_posunBodDolu.Enabled = false;
+                    B_posunBodDoprava.Enabled = false;
+                    B_posunBodNahoru.Enabled = false;
+                }
+                else
+                {
+                    B_posunBodDoleva.Enabled = true;
+                    B_posunBodDolu.Enabled = true;
+                    B_posunBodDoprava.Enabled = true;
+                    B_posunBodNahoru.Enabled = true;
+                }
             }
         }
 
@@ -199,7 +210,7 @@ namespace InteraktivniGeometrie
 
         private void B_oblouk_Click(object sender, EventArgs e)
         {
-            PridejObloukForm f2 = new PridejObloukForm(n);
+            PridejObloukForm f2 = new PridejObloukForm(n, false);
             f2.Show();
         }
 
@@ -246,6 +257,7 @@ namespace InteraktivniGeometrie
                     this.textFile = Path.GetFullPath(dialog.FileName);
                 }
             }
+            Console.Write(n.getHistory());
             File.WriteAllLines(textFile, n.getHistory());
             
         }
@@ -258,10 +270,15 @@ namespace InteraktivniGeometrie
                 this.textFile = Path.GetFullPath(dialog.FileName);
                 string[] commands = File.ReadAllLines(textFile);
                 
-                n = new Nakresna(panel1, comboBoxBody, CB_zvolenyTvar, 2, new List<string>(commands));
+                n = new Nakresna(panel1, comboBoxBody, CB_zvolenyTvar, 2);
                 foreach (string s in commands)
                     executeCommand(s);
             }
+        }
+
+        private void NovaElipsa_Button_Click(object sender, EventArgs e)
+        {
+            new PridejOhniskovouElipsu(n).Show();
         }
     }
 }

@@ -20,8 +20,12 @@ namespace InteraktivniGeometrie
                 }
                 throw new SpatneArgumentyPrikazuException();
             }
-            Array.ConstrainedCopy(args, 0, oblouky, 0, args.Length - 1);
-            n.pridejOblouky(jmeno, oblouky);
+            if (oblouky.Length == 5)
+            {
+                Array.ConstrainedCopy(args, 0, oblouky, 0, args.Length - 1);
+                n.pridejOblouky(jmeno, oblouky);
+            }
+           
         }
 
         public string getName()

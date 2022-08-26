@@ -46,14 +46,32 @@ namespace InteraktivniGeometrie
             return new Vektor[] { vektorX, vektorY, vektorPosun };
         }
 
-        public void pridejEliptickyOblouk(string jmeno, string[] jmenaBodu)
+        public void pridejEliptickyOblouk(string jmeno, string[] args)
         {
-            Bod stred = najdiBodPodleJmena(jmenaBodu[0]);
-            Bod k = najdiBodPodleJmena(jmenaBodu[3]);
-            Bod z = najdiBodPodleJmena(jmenaBodu[2]);
-            Bod dalsi = najdiBodPodleJmena(jmenaBodu[1]);
+            if (args.Length == 4)
+            {
+                float sweepAngle;
+                if (float.TryParse(args[3], out sweepAngle)){
+                    Bod ohnisko1 = najdiBodPodleJmena(args[0]);
+                    Bod ohnisko2 = najdiBodPodleJmena(args[1]);
+                    Bod stredd = najdiBodPodleJmena(args[2]);
+                    this.prostor.pridejTvar(new EliptickyObloukOhniskovy(ohnisko1, ohnisko2, stredd, sweepAngle, new Vektor2D(0, 1), jmeno));
+                }
+                Bod stred = najdiBodPodleJmena(args[0]);
+                Bod k = najdiBodPodleJmena(args[3]);
+                Bod z = najdiBodPodleJmena(args[2]);
+                Bod dalsi = najdiBodPodleJmena(args[1]);
 
-            this.prostor.pridejTvar(new EliptickyOblouk(stred, dalsi, z, k, new Vektor2D(0, 1), jmeno));
+                this.prostor.pridejTvar(new EliptickyOblouk(stred, dalsi, z, k, new Vektor2D(0, 1), jmeno));
+            }
+            if(args.Length == 3)
+            {
+                Bod ohnisko1 = najdiBodPodleJmena(args[0]);
+                Bod ohnisko2 = najdiBodPodleJmena(args[1]);
+                Bod dalsi = najdiBodPodleJmena(args[2]);
+
+                this.prostor.pridejTvar(new EliptickyObloukOhniskovy(ohnisko1, ohnisko2, dalsi, 360, new Vektor2D(0, 1), jmeno));
+            }
         }
 
         internal void pridejOblouky(string jmeno, string[] oblouky)
@@ -188,6 +206,8 @@ namespace InteraktivniGeometrie
             throw new BodNeexistujeException();
         }
 
+        
+
         public Tvar najdiTvarPodleJmena(string name)
         {
             foreach(Tvar t in this.prostor.vsechnyTvary())
@@ -295,6 +315,8 @@ namespace InteraktivniGeometrie
             comboBoxTvary.Items.Add(jmeno);
         }
 
+        
+
         public void pridejKruznici(string jmeno, string[] jmenaBodu)
         {
             foreach (Tvar t in this.prostor.vsechnyTvary())
@@ -305,7 +327,10 @@ namespace InteraktivniGeometrie
                     return;
                 }
             }
-            this.prostor.pridejTvar(new Kruznice(najdiBodPodleJmena(jmenaBodu[0]), najdiBodPodleJmena(jmenaBodu[1]), najdiBodPodleJmena(jmenaBodu[2]), jmeno));
+            if(jmenaBodu.Length == 3)
+                this.prostor.pridejTvar(new Kruznice(najdiBodPodleJmena(jmenaBodu[0]), najdiBodPodleJmena(jmenaBodu[1]), najdiBodPodleJmena(jmenaBodu[2]), jmeno));
+            if (jmenaBodu.Length == 2)
+                this.prostor.pridejTvar(new KruzniceStredova(najdiBodPodleJmena(jmenaBodu[0]), najdiBodPodleJmena(jmenaBodu[1]), new Vektor2D(0, 1), new Vektor2D(1,0), jmeno));
             comboBoxTvary.Items.Add(jmeno);
         }
 
@@ -330,6 +355,16 @@ namespace InteraktivniGeometrie
             for(int i=0; i<ret.Length; i++)
             {
                 ret[i] = this.prostor.vsechnyBody()[i].getName();
+            }
+            return ret;
+        }
+
+        public string[] getJmenaVsechVolnychBodu()
+        {
+            string[] ret = new string[this.prostor.vsechnyBody().Length];
+            for (int i = 0; i < ret.Length; i++)
+            {
+                ret[i] = this.prostor.vsechnyVolneBody()[i].getName();
             }
             return ret;
         }

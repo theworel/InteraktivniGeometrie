@@ -17,5 +17,7 @@ namespace InteraktivniGeometrie
         Tvar[] tvarySTimtoBodem(Bod b);
         void odeberBod(Bod b);
         void odeberTvar(Tvar t);
+        void pridejPrusecikyTvaru(Tvar t1, Tvar t2);
+        Bod[] vsechnyVolneBody();
     }
 }

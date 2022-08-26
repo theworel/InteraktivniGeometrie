@@ -8,7 +8,7 @@ namespace InteraktivniGeometrie
 {
     class Prostor2D : Prostor
     {
-
+        private int pocetPruseciku;
         private List<Bod> body;
         private List<Tvar> tvary;
         private List<Tuple<Bod,List<Tvar>>> prislusnosti;
@@ -17,6 +17,7 @@ namespace InteraktivniGeometrie
             this.body = new List<Bod>();
             this.tvary = new List<Tvar>();
             this.prislusnosti = new List<Tuple<Bod, List<Tvar>>>();
+            this.pocetPruseciku = 0;
         }
 
         public Vektor[] kanonickaBaze()
@@ -69,6 +70,7 @@ namespace InteraktivniGeometrie
 
         public Bod[] vsechnyBody()
         {
+            
             return body.ToArray();
         }
 
@@ -89,6 +91,32 @@ namespace InteraktivniGeometrie
         public void odeberTvar(Tvar t)
         {
             this.tvary.Remove(t);
+        }
+
+        public void pridejPrusecikyTvaru(Tvar t1, Tvar t2)
+        {
+            
+            foreach(Cara c in t1.klicoveCary()){
+                foreach (Cara d in t2.klicoveCary()){
+                    Bod[] prusecikyCar = c.prusecikyS(d);
+                    foreach(Bod prusecik in prusecikyCar)
+                    {
+                        this.pridejBod(new Bod2D(prusecik.getSouradnice()[0], prusecik.getSouradnice()[1], true, pocetPruseciku));
+                        pocetPruseciku++;
+                    }
+                }
+            }
+        }
+
+        public Bod[] vsechnyVolneBody()
+        {
+            List<Bod> ret = new List<Bod>();
+            foreach (Bod b in this.body)
+            {
+                if (!b.jePrusecik())
+                    ret.Add(b);
+            }
+            return ret.ToArray();
         }
     }
 }

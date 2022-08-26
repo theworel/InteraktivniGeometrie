@@ -15,7 +15,7 @@ namespace InteraktivniGeometrie
     public partial class PridejObloukForm : Form
     {
         private Nakresna n;
-
+        private bool uplny;
         private ComboBox[] boxy;
 
         public PridejObloukForm()
@@ -23,11 +23,19 @@ namespace InteraktivniGeometrie
             InitializeComponent();
         }
 
-        public PridejObloukForm(Nakresna n)
+        public PridejObloukForm(Nakresna n, bool uplny)
         {
             InitializeComponent();
             this.n = n;
+            this.uplny = uplny;
             this.boxy = new ComboBox[] { CB_B1, CB_B2, CB_dalsi, CB_stred };
+            foreach(ComboBox cb in boxy)
+            {
+                cb.Items.Add(" ");
+                cb.Items.AddRange(n.getJmenaVsechBodu());
+            }
+            if (!uplny)
+                this.components.Remove(ChangeForm_Button);
         }
 
         private void label1_Click(object sender, EventArgs e)
@@ -78,8 +86,9 @@ namespace InteraktivniGeometrie
             if(body.Count() == body.Distinct().Count())
             {
                 n.VykresliSe();
+                
                 new EliptickyOblouk(n.najdiBodPodleJmena(CB_stred.SelectedItem.ToString()), n.najdiBodPodleJmena(CB_dalsi.SelectedItem.ToString()),
-                    n.najdiBodPodleJmena(CB_B1.SelectedItem.ToString()) , n.najdiBodPodleJmena(CB_B2.SelectedItem.ToString()), new Vektor2D(0F,1F),"").klicoveCary()[0]
+                    n.najdiBodPodleJmena(CB_B1.SelectedItem.ToString()) , n.najdiBodPodleJmena(CB_B2.SelectedItem.ToString()), new Vektor2D(0F,1F), uplny, "").klicoveCary()[0]
                     .vykresliSe(n.getVektory()[0], n.getVektory()[1], n.getVektory()[2], n);
                 if(TB_jmeno.Text.Length > 0)
                 {
@@ -104,6 +113,17 @@ namespace InteraktivniGeometrie
             {
                 MessageBox.Show("Tvar s tímto jménem již existuje, zvolte prosím jiné jméno");
             }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            this.Close();
+            new PridejOhniskovouElipsu(n).Show();
+        }
+
+        private void PridejObloukForm_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

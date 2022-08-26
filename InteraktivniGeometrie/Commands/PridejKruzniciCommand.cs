@@ -13,7 +13,7 @@ namespace InteraktivniGeometrie.Commands
             string jmeno = args.Last();
             string[] jmenaBodu = new string[args.Length - 1];
             Array.ConstrainedCopy(args, 0, jmenaBodu, 0, args.Length - 1);
-            if(jmenaBodu.Length != 3)
+            if(jmenaBodu.Length != 3 && jmenaBodu.Length != 2)
             {
                 throw new SpatneArgumentyPrikazuException();
             }

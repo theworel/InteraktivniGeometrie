@@ -154,5 +154,17 @@ namespace InteraktivniGeometrie
 
             
         }
+
+        public Bod[] prusecikySElipsou(Bod pocatek, float[] rovnice)
+        {
+            float kvadratickyClen = v1 * v1 * rovnice[0] + v2 * v2 * rovnice[2] + v1 * v2 * rovnice[1];
+            float linearniClen = 2 * pocatek.getSouradnice()[0] * v1 * rovnice[0] + 2 * pocatek.getSouradnice()[1] * v2 * rovnice[2] + rovnice[1] * (pocatek.getSouradnice()[0] * v2 + pocatek.getSouradnice()[1] * v1) + rovnice[3] * v1 + rovnice[4] * v2;
+            //2*0 + 2*0 + 
+            float konstantniClen = rovnice[0] * pocatek.getSouradnice()[0] * pocatek.getSouradnice()[0] + rovnice[2] * pocatek.getSouradnice()[1] * pocatek.getSouradnice()[1] + rovnice[1] * pocatek.getSouradnice()[1] * pocatek.getSouradnice()[0] + rovnice[3] * pocatek.getSouradnice()[0] + rovnice[4] * pocatek.getSouradnice()[1] - 1;
+
+            float s = (-linearniClen + (float)Math.Sqrt(linearniClen * linearniClen - 4 * kvadratickyClen * konstantniClen)) / 2 / kvadratickyClen;
+            float s2 = (-linearniClen - (float)Math.Sqrt(linearniClen * linearniClen - 4 * kvadratickyClen * konstantniClen)) / 2 / kvadratickyClen;
+            return new Bod[] { this.skaluj(s).posun(pocatek), this.skaluj(s2).posun(pocatek) };
+        }
     }
 }

@@ -14,8 +14,11 @@ namespace InteraktivniGeometrie.Commands
 
             string[] jmenaBodu = new string[args.Length - 1];
             Array.ConstrainedCopy(args, 0, jmenaBodu, 0, args.Length - 1);
-
-            n.pridejEliptickyOblouk(jmeno, jmenaBodu);
+            if (jmenaBodu.Length == 4 || jmenaBodu.Length == 3) { 
+                n.pridejEliptickyOblouk(jmeno, jmenaBodu);
+                return;
+            }
+            
         }
 
         public string getName()

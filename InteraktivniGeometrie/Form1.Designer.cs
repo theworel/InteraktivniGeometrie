@@ -53,6 +53,7 @@
             this.B_OdeberTvar = new System.Windows.Forms.Button();
             this.Button_uloz = new System.Windows.Forms.Button();
             this.Button_otevri = new System.Windows.Forms.Button();
+            this.NovaElipsa_Button = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // panel1
@@ -299,11 +300,22 @@
             this.Button_otevri.UseVisualStyleBackColor = true;
             this.Button_otevri.Click += new System.EventHandler(this.Button_otevri_Click);
             // 
+            // NovaElipsa_Button
+            // 
+            this.NovaElipsa_Button.Location = new System.Drawing.Point(943, 324);
+            this.NovaElipsa_Button.Name = "NovaElipsa_Button";
+            this.NovaElipsa_Button.Size = new System.Drawing.Size(108, 43);
+            this.NovaElipsa_Button.TabIndex = 26;
+            this.NovaElipsa_Button.Text = "Nová elipsa";
+            this.NovaElipsa_Button.UseVisualStyleBackColor = true;
+            this.NovaElipsa_Button.Click += new System.EventHandler(this.NovaElipsa_Button_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1196, 480);
+            this.Controls.Add(this.NovaElipsa_Button);
             this.Controls.Add(this.Button_otevri);
             this.Controls.Add(this.Button_uloz);
             this.Controls.Add(this.B_OdeberTvar);
@@ -363,6 +375,7 @@
         private System.Windows.Forms.Button B_OdeberTvar;
         private System.Windows.Forms.Button Button_uloz;
         private System.Windows.Forms.Button Button_otevri;
+        private System.Windows.Forms.Button NovaElipsa_Button;
     }
 }
 

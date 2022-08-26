@@ -18,5 +18,6 @@ namespace InteraktivniGeometrie
         Bod stredUsecky(Bod druhy);
         Vektor vektorNaBod(Bod konec);
         Bod projekceNaPrimku(Bod pocatek, Vektor vektorX);
+        bool jePrusecik();
     }
 }

@@ -8,7 +8,7 @@ namespace InteraktivniGeometrie
 {
     public interface Vektor
     {
-        
+
         Vektor projekceNa(Vektor druhy);
         Vektor pricti(Vektor druhy);
         float skalarniSoucin(Vektor druhy);
@@ -22,6 +22,7 @@ namespace InteraktivniGeometrie
         void otoc(Vektor druhyVektor, float uhel);
         Vektor otoceny(Vektor druhyVektor, float uhel);
         Bod prusecikSElipsou(Bod pocatek, float[] rovnice);
+        Bod[] prusecikySElipsou(Bod pocatek, float[] rovnice);
         
     }
 }

@@ -14,25 +14,44 @@ namespace InteraktivniGeometrie
         private float souradniceY;
         private string name;
         private bool nameVisible;
+        private bool prusecik;
+        
 
         public string getName()
         {
             return this.name;
         }
 
+        public Bod2D(float v1, float v2, bool prusecik) : this(v1, v2)
+        {
+            prusecik = prusecik;
+        }
+
+        public bool jePrusecik()
+        {
+            return this.prusecik;
+        }
         public Bod2D(float v1, float v2, string name)
         {
             this.souradniceX = v1;
             this.souradniceY = v2;
             this.name = name;
             this.nameVisible = true;
+            prusecik = false;
         }
 
         public Bod2D(float x, float y)
         {
             this.souradniceX = x;
             this.souradniceY = y;
+            prusecik = false;
         }
+
+        public Bod2D(float v1, float v2, bool prusecik, int pocetPruseciku) : this(v1, v2, prusecik)
+        {
+            this.name = "prusecik " + pocetPruseciku;
+        }
+
         public float[] getSouradnice()
         {
             return new float[] { souradniceX, souradniceY };

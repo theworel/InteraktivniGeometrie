@@ -84,7 +84,7 @@ namespace InteraktivniGeometrie.Tvary
             return ret;
         }
         
-        static float[] vyresSoustavuRovnic(int zbyvajicichPromennych, float[][] radky)
+        public static float[] vyresSoustavuRovnic(int zbyvajicichPromennych, float[][] radky)
         {
             if (zbyvajicichPromennych == 1)
             {
@@ -213,7 +213,9 @@ namespace InteraktivniGeometrie.Tvary
             if (sweepAngle < soucetUhlu-0.1F)
                 sweepAngle = 360 - sweepAngle;
 
-            Oblouk o = new Oblouk(top, right, stred, startAngle, sweepAngle);
+            if (this.uplny)
+                sweepAngle = 360;
+            Oblouk o = new Oblouk(top, right, stred, startAngle, sweepAngle, normalizovanaRovnice);
             //this.stred = stred;
             this.oblouk = o;
             return new Cara[] { oblouk };
@@ -231,10 +233,18 @@ namespace InteraktivniGeometrie.Tvary
 
         private Bod dalsi, z, k;
         private Vektor kolmySmer;
+        private double sweepAngle;
+        private Vektor2D vektor2D;
+        private string jmeno;
+        private bool uplny;
 
-
+        public EliptickyOblouk(Bod stred, Bod dalsi, Bod z, Bod k, Vektor kolmySmer, bool uplny, string jmeno) : this(stred,dalsi,z,k,kolmySmer,jmeno)
+        {
+            this.uplny = uplny;
+        }
         public EliptickyOblouk(Bod stred, Bod dalsi, Bod z, Bod k, Vektor kolmySmer, string jmeno)
         {
+            this.uplny = false;
             this.name = jmeno;
             if (z.stredUsecky(k).jeStejnyJako(stred) || z.stredUsecky(dalsi).jeStejnyJako(stred) || k.stredUsecky(dalsi).jeStejnyJako(stred))
             {
@@ -306,9 +316,11 @@ namespace InteraktivniGeometrie.Tvary
 
         public EliptickyOblouk(Bod hlavniBodA, Bod hlavniBodB, Bod dalsi)
         {
-
+            
         }
 
        
+
+        
     }
 }

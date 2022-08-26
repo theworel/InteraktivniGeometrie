@@ -40,6 +40,7 @@
             this.CB_B1 = new System.Windows.Forms.ComboBox();
             this.CB_stred = new System.Windows.Forms.ComboBox();
             this.TB_jmeno = new System.Windows.Forms.TextBox();
+            this.ChangeForm_Button = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // B_enter
@@ -142,11 +143,22 @@
             this.TB_jmeno.TabIndex = 10;
             this.TB_jmeno.TextChanged += new System.EventHandler(this.TB_jmeno_TextChanged);
             // 
+            // ChangeForm_Button
+            // 
+            this.ChangeForm_Button.Location = new System.Drawing.Point(256, 213);
+            this.ChangeForm_Button.Name = "ChangeForm_Button";
+            this.ChangeForm_Button.Size = new System.Drawing.Size(121, 60);
+            this.ChangeForm_Button.TabIndex = 11;
+            this.ChangeForm_Button.Text = "Přidej Elipsu pomocí ohnisek a bodu";
+            this.ChangeForm_Button.UseVisualStyleBackColor = true;
+            this.ChangeForm_Button.Click += new System.EventHandler(this.button1_Click);
+            // 
             // PridejObloukForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(456, 338);
+            this.Controls.Add(this.ChangeForm_Button);
             this.Controls.Add(this.TB_jmeno);
             this.Controls.Add(this.CB_stred);
             this.Controls.Add(this.CB_B1);
@@ -160,6 +172,7 @@
             this.Controls.Add(this.B_enter);
             this.Name = "PridejObloukForm";
             this.Text = "PridejObloukForm";
+            this.Load += new System.EventHandler(this.PridejObloukForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -178,5 +191,6 @@
         private System.Windows.Forms.ComboBox CB_B1;
         private System.Windows.Forms.ComboBox CB_stred;
         private System.Windows.Forms.TextBox TB_jmeno;
+        private System.Windows.Forms.Button ChangeForm_Button;
     }
 }

@@ -9,9 +9,13 @@ namespace InteraktivniGeometrie
     public interface Cara
     {
         //void vykresliSe(float[,] vektory, Nakresna n, out float[] poziceJmena);
-        void vykresliSe(Vektor vektorX, Vektor vektorY, Vektor vektorPosun,  Nakresna n);
+        void vykresliSe(Vektor vektorX, Vektor vektorY, Vektor vektorPosun, Nakresna n);
         void vykresliSeSBarvou(Vektor vektorX, Vektor vektorY, Vektor vektorPosun, Nakresna n, System.Drawing.Pen b);
         Bod getStred();
+        Bod[] prusecikyS(Cara druha);
+        float[] rovnice();
+        float[] yPodleRovnice(float x);
+        bool obsahujeBod(Bod kandidat);
         //string getName();
     }
 }

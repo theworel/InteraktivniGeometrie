@@ -88,5 +88,11 @@ namespace InteraktivniGeometrie
         {
             zmenaVstupu();
         }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            this.Close();
+            new PridejKruzniciStredemForm(n).Show();
+        }
     }
 }
