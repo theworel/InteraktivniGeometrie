@@ -63,8 +63,8 @@
   <ItemGroup>
     <Compile Include="Bod.cs" />
     <Compile Include="Bod2D.cs" />
-    <Compile Include="Cary\CaraClass.cs" />
     <Compile Include="Commands\PosunBodCommand.cs" />
+    <Compile Include="Commands\PridejPrusecikyCommand.cs" />
     <Compile Include="Exceptions\BodNeexistujeException.cs" />
     <Compile Include="Cary\Cara.cs" />
     <Compile Include="Exceptions\DuplicitniJmenoException.cs" />
@@ -111,6 +111,12 @@
       <DependentUpon>PridejUsecku.cs</DependentUpon>
     </Compile>
     <Compile Include="Exceptions\TvarNeexistujeException.cs" />
+    <Compile Include="PrusecikyForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PrusecikyForm.Designer.cs">
+      <DependentUpon>PrusecikyForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Tvary\EliptickyOblouk.cs" />
     <Compile Include="Commands\Command.cs" />
     <Compile Include="Commands\PridejEliptickyObloukCommand.cs" />
@@ -133,7 +139,6 @@
     <Compile Include="Tvary\Oblouky-tvar.cs" />
     <Compile Include="Commands\PridejBodCommand.cs" />
     <Compile Include="Commands\PridejMnohouhelnikCommand.cs" />
-    <Compile Include="Commands\PridejObloukCommand.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Prostor.cs" />
@@ -177,6 +182,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="PrusecikyForm.resx">
+      <DependentUpon>PrusecikyForm.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="ClassDiagram1.cd" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

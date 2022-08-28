@@ -99,6 +99,7 @@
             this.TB_jmeno.Name = "TB_jmeno";
             this.TB_jmeno.Size = new System.Drawing.Size(121, 22);
             this.TB_jmeno.TabIndex = 6;
+            this.TB_jmeno.TextChanged += new System.EventHandler(this.TB_jmeno_TextChanged);
             // 
             // PridejUsecku
             // 

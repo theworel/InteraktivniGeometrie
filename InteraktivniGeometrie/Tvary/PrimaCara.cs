@@ -64,7 +64,8 @@ namespace InteraktivniGeometrie
             Console.WriteLine(poziceJmena[0]);
             Console.WriteLine(poziceJmena[1]);
             Console.WriteLine(this.getName());
-            n.getG().DrawString(this.getName(), SystemFonts.DefaultFont, Brushes.Black, poziceJmena[0], poziceJmena[1]);
+            if(nameVisible)
+                n.getG().DrawString(this.getName(), SystemFonts.DefaultFont, Brushes.Black, poziceJmena[0], poziceJmena[1]);
         }
 
         public void vykresliSe(float[] vektorX, float[] vektorY, Nakresna n)

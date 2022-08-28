@@ -16,7 +16,7 @@ namespace InteraktivniGeometrie //část elipsy vepsané obdélníku určeném b
             float ret = stred.vektorNaBod(a).getUhel(stred.vektorNaBod(b)) * 180 / (float)Math.PI;
             return ret;
 
-            if (a.projekceNaPrimku(stred, osaDoprava).vzdalenostOd(b.projekceNaPrimku(stred, osaDoprava)) > a.projekceNaPrimku(stred, osaDoprava).vzdalenostOd(stred))//pokud A a B jsou v ruznych polkach elipsy podle svisle osy
+            /*if (a.projekceNaPrimku(stred, osaDoprava).vzdalenostOd(b.projekceNaPrimku(stred, osaDoprava)) > a.projekceNaPrimku(stred, osaDoprava).vzdalenostOd(stred))//pokud A a B jsou v ruznych polkach elipsy podle svisle osy
             {
                 if (a.projekceNaPrimku(stred, svislaOsa).vzdalenostOd(b.projekceNaPrimku(stred, svislaOsa)) > a.projekceNaPrimku(stred, svislaOsa).vzdalenostOd(stred))//A a B jsou v ruznych pulkach elipsy podle vodorovne osy, tedy v opacnych kvadrantech
 
@@ -50,7 +50,7 @@ namespace InteraktivniGeometrie //část elipsy vepsané obdélníku určeném b
                 else
                     ret = stred.vektorNaBod(a).getUhel(stred.vektorNaBod(b)) * 180 / (float)Math.PI;
             }
-            return ret;
+            return ret;*/
         }
 
 
@@ -59,6 +59,7 @@ namespace InteraktivniGeometrie //část elipsy vepsané obdélníku určeném b
         private float[] rovniceElipsy;
         private float delkaHlavniPoloosy;
         private float b;
+        
 
         public Oblouk(Bod top, Bod right, Bod stred, float startAngle, float sweepAngle, float[] rovnice)
         {
@@ -74,10 +75,12 @@ namespace InteraktivniGeometrie //část elipsy vepsané obdélníku určeném b
             this.rovniceElipsy = rovnice;
 
             this.delkaHlavniPoloosy = Math.Max(top.vzdalenostOd(stred), right.vzdalenostOd(stred));
-            float delkaVedlejsiPoloosy = Math.Min((top.vzdalenostOd(stred), right.vzdalenostOd(stred));
+            float delkaVedlejsiPoloosy = Math.Min(top.vzdalenostOd(stred), right.vzdalenostOd(stred));
             float e = 2 * (float)Math.Sqrt(delkaHlavniPoloosy * delkaHlavniPoloosy / 4 - delkaVedlejsiPoloosy * delkaVedlejsiPoloosy);
             this.b = (float)Math.Sqrt(delkaHlavniPoloosy * delkaHlavniPoloosy - e * e);
         }
+
+       
 
         public float[] yPodleRovnice(float x)
         {
@@ -198,7 +201,7 @@ namespace InteraktivniGeometrie //část elipsy vepsané obdélníku určeném b
                 g.RotateTransform(uhel);
                 g.TranslateTransform(-projekceStred.X, -projekceStred.Y);
             }
-            catch (ArgumentException e)
+            catch (ArgumentException)
             {
                 Console.WriteLine(uhel);
             }
@@ -209,7 +212,7 @@ namespace InteraktivniGeometrie //část elipsy vepsané obdélníku určeném b
                 g.RotateTransform(-uhel);
                 g.TranslateTransform(-projekceStred.X, -projekceStred.Y);
             }
-            catch (ArgumentException e)
+            catch (ArgumentException)
             {
                 Console.WriteLine(-uhel);
             }
@@ -247,7 +250,7 @@ namespace InteraktivniGeometrie //část elipsy vepsané obdélníku určeném b
                 g.RotateTransform(uhel);
                 g.TranslateTransform(-projekceStred.X, -projekceStred.Y);
             }
-            catch (ArgumentException e)
+            catch (ArgumentException)
             {
                 Console.WriteLine(uhel);
             }
@@ -258,7 +261,7 @@ namespace InteraktivniGeometrie //část elipsy vepsané obdélníku určeném b
                 g.RotateTransform(-uhel);
                 g.TranslateTransform(-projekceStred.X, -projekceStred.Y);
             }
-            catch (ArgumentException e)
+            catch (ArgumentException)
             {
                 Console.WriteLine(-uhel);
             }

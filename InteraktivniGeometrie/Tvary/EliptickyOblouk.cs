@@ -53,7 +53,7 @@ namespace InteraktivniGeometrie.Tvary
             Bod[] ret = new Bod[3];
             float[] vzdalenosti = new float[3];
             Bod[] body = new Bod[] { z, k, dalsi };
-            int i = 0;
+           // int i = 0;
             float vzdalenostZ = z.projekceNaPrimku(stred, vektorOsyDoprava).vzdalenostOd(right);
             if (z.projekceNaPrimku(stred, vektorOsyNahoru).vzdalenostOd(top) < stred.vzdalenostOd(top))
                 vzdalenostZ = right.vzdalenostOd(stred) * 4 - vzdalenostZ;
@@ -155,7 +155,7 @@ namespace InteraktivniGeometrie.Tvary
 
         public Bod[] klicoveBody()
         {
-            throw new NotImplementedException();
+            return new Bod[] { stred, k, z, dalsi };
         }
 
         public Cara[] klicoveCary()
@@ -176,7 +176,7 @@ namespace InteraktivniGeometrie.Tvary
 
             }
 
-            float[] normalizovanaRovnice = vyresSoustavuRovnic(5, radky); //pro kazdy bod elipsy (x,y) plati: nr.1*x^2 + nr.2*y^2 + nr.3*x*y + nr.4*x+nr.5*y = 1
+            float[] normalizovanaRovnice = vyresSoustavuRovnic(5, radky); //pro kazdy bod elipsy (x,y) plati: nr.1*x^2 + nr.2*x*y + nr.3*y*y + nr.4*x+nr.5*y = 1
                                                                           //nr2yy + nr3xy + nr5y = 1 - nr1xx - nr4x
                                                                           //nr2yy + (nr3x + nr5) + (nr1xx + nr4x -1) = 0
                                                                           //D = (nr3x+nr5)^2 - 4nr2(nr1xx+nr4x-1)
@@ -234,8 +234,8 @@ namespace InteraktivniGeometrie.Tvary
         private Bod dalsi, z, k;
         private Vektor kolmySmer;
         private double sweepAngle;
-        private Vektor2D vektor2D;
-        private string jmeno;
+        
+        
         private bool uplny;
 
         public EliptickyOblouk(Bod stred, Bod dalsi, Bod z, Bod k, Vektor kolmySmer, bool uplny, string jmeno) : this(stred,dalsi,z,k,kolmySmer,jmeno)

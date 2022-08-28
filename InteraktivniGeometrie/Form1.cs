@@ -26,7 +26,7 @@ namespace InteraktivniGeometrie
             allCommands.Add(new PridejBodCommand());
             allCommands.Add(new NakresliCaruCommand());
             allCommands.Add(new PridejMnohouhelnikCommand());
-            allCommands.Add(new PridejObloukCommand());
+            
             allCommands.Add(new PridejKruzniciCommand());
             allCommands.Add(new PridejEliptickyObloukCommand());
             allCommands.Add(new PosunBodCommand());
@@ -279,6 +279,11 @@ namespace InteraktivniGeometrie
         private void NovaElipsa_Button_Click(object sender, EventArgs e)
         {
             new PridejOhniskovouElipsu(n).Show();
+        }
+
+        private void B_pruseciky_Click(object sender, EventArgs e)
+        {
+            new PrusecikyForm(n).Show();
         }
     }
 }

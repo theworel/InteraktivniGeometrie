@@ -11,12 +11,15 @@ namespace InteraktivniGeometrie
         private int pocetPruseciku;
         private List<Bod> body;
         private List<Tvar> tvary;
-        private List<Tuple<Bod,List<Tvar>>> prislusnosti;
+        private Dictionary<Bod,List<Tvar>> prislusnosti;
+       
+        private Dictionary<Tvar, List<Bod>> prusecikyTvaru;
         public Prostor2D()
         {
             this.body = new List<Bod>();
             this.tvary = new List<Tvar>();
-            this.prislusnosti = new List<Tuple<Bod, List<Tvar>>>();
+            this.prislusnosti = new Dictionary<Bod, List<Tvar>>();
+            this.prusecikyTvaru = new Dictionary<Tvar, List<Bod>>();
             this.pocetPruseciku = 0;
         }
 
@@ -30,7 +33,7 @@ namespace InteraktivniGeometrie
             if (b.getSouradnice().Length == 2)
             {
                 body.Add(b);
-                prislusnosti.Add(new Tuple<Bod, List<Tvar>>(b, new List<Tvar>()));
+                prislusnosti.Add(b, new List<Tvar>());
             }
             else
                 Console.WriteLine("neplatné zadání bodu - špatný počet souřadnic pro daný prostor");
@@ -45,27 +48,29 @@ namespace InteraktivniGeometrie
         {
             this.tvary.Add(t);
             foreach(Bod b in t.klicoveBody()){
-                foreach (Tuple<Bod, List<Tvar>> tup in prislusnosti)
-                {
-                    if (tup.Item1.Equals(b))
-                        tup.Item2.Add(t);
-
-                }
+                prislusnosti[b].Add(t);
             }
+            prusecikyTvaru.Add(t, new List<Bod>());
         }
 
         public Tvar[] tvarySTimtoBodem(Bod b)
         {
-            
 
-            foreach(Tuple<Bod,List<Tvar>> t in prislusnosti)
-            {
-                if (t.Item1.Equals(b))
-                    return t.Item2.ToArray();
 
-            }
+            List<Tvar> ret = new List<Tvar>();
+            if (prislusnosti.TryGetValue(b, out ret))
+                return ret.ToArray();
 
             throw new BodNeexistujeException();
+        }
+
+        public Bod[] bodyZavisleNaTvaru(Tvar tvar)
+        {
+            List<Bod> ret = new List<Bod>();
+            if (prusecikyTvaru.TryGetValue(tvar,out ret))
+                return ret.ToArray();
+
+            throw new Exception();
         }
 
         public Bod[] vsechnyBody()
@@ -90,22 +95,27 @@ namespace InteraktivniGeometrie
 
         public void odeberTvar(Tvar t)
         {
+            foreach(Bod b in bodyZavisleNaTvaru(t))
+            {
+                odeberBod(b);
+            }
             this.tvary.Remove(t);
         }
 
         public void pridejPrusecikyTvaru(Tvar t1, Tvar t2)
         {
+
+
+        foreach (Bod prusecik in this.najdiPrusecikyTvaru(t1, t2))
+              {
+                 Bod pojmenovany = new Bod2D(prusecik.getSouradnice()[0], prusecik.getSouradnice()[1], true, pocetPruseciku);
+                 this.pridejBod(pojmenovany);
+                 prusecikyTvaru[t1].Add(pojmenovany);
+                 prusecikyTvaru[t2].Add(pojmenovany);
+                 pocetPruseciku++;
+              }
+                
             
-            foreach(Cara c in t1.klicoveCary()){
-                foreach (Cara d in t2.klicoveCary()){
-                    Bod[] prusecikyCar = c.prusecikyS(d);
-                    foreach(Bod prusecik in prusecikyCar)
-                    {
-                        this.pridejBod(new Bod2D(prusecik.getSouradnice()[0], prusecik.getSouradnice()[1], true, pocetPruseciku));
-                        pocetPruseciku++;
-                    }
-                }
-            }
         }
 
         public Bod[] vsechnyVolneBody()
@@ -117,6 +127,23 @@ namespace InteraktivniGeometrie
                     ret.Add(b);
             }
             return ret.ToArray();
+        }
+
+        public Bod[] najdiPrusecikyTvaru(Tvar tvar1, Tvar tvar2)
+        {
+            List<Bod> pruseciky = new List<Bod>();
+            foreach (Cara c in tvar1.klicoveCary())
+            {
+                foreach (Cara d in tvar2.klicoveCary())
+                {
+                    Bod[] prusecikyCar = c.prusecikyS(d);
+                    foreach (Bod prusecik in prusecikyCar)
+                    {
+                        pruseciky.Add(prusecik);
+                    }
+                }
+            }
+            return pruseciky.ToArray();
         }
     }
 }

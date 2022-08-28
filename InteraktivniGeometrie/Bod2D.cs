@@ -24,7 +24,7 @@ namespace InteraktivniGeometrie
 
         public Bod2D(float v1, float v2, bool prusecik) : this(v1, v2)
         {
-            prusecik = prusecik;
+            this.prusecik = prusecik;
         }
 
         public bool jePrusecik()

@@ -54,6 +54,7 @@
             this.Button_uloz = new System.Windows.Forms.Button();
             this.Button_otevri = new System.Windows.Forms.Button();
             this.NovaElipsa_Button = new System.Windows.Forms.Button();
+            this.B_pruseciky = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // panel1
@@ -310,11 +311,22 @@
             this.NovaElipsa_Button.UseVisualStyleBackColor = true;
             this.NovaElipsa_Button.Click += new System.EventHandler(this.NovaElipsa_Button_Click);
             // 
+            // B_pruseciky
+            // 
+            this.B_pruseciky.Location = new System.Drawing.Point(735, 422);
+            this.B_pruseciky.Name = "B_pruseciky";
+            this.B_pruseciky.Size = new System.Drawing.Size(201, 46);
+            this.B_pruseciky.TabIndex = 27;
+            this.B_pruseciky.Text = "Najd průsečíky";
+            this.B_pruseciky.UseVisualStyleBackColor = true;
+            this.B_pruseciky.Click += new System.EventHandler(this.B_pruseciky_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1196, 480);
+            this.Controls.Add(this.B_pruseciky);
             this.Controls.Add(this.NovaElipsa_Button);
             this.Controls.Add(this.Button_otevri);
             this.Controls.Add(this.Button_uloz);
@@ -376,6 +388,7 @@
         private System.Windows.Forms.Button Button_uloz;
         private System.Windows.Forms.Button Button_otevri;
         private System.Windows.Forms.Button NovaElipsa_Button;
+        private System.Windows.Forms.Button B_pruseciky;
     }
 }
 

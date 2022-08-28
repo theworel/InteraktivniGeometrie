@@ -36,9 +36,36 @@ namespace InteraktivniGeometrie
             return this.selected.getName();
         }
 
+        internal void nakresliPruseciky(string v1, string v2)
+        {
+            foreach (Bod b in prostor.najdiPrusecikyTvaru(najdiTvarPodleJmena(v1), najdiTvarPodleJmena(v2))){
+                nakresliBod(b);
+            }
+        }
+
         public string[] getHistory()
         {
             return this.history.ToArray();
+        }
+
+        public void pridejPruseciky(string prvniJmeno, string druheJmeno)
+        {
+            Tvar t1, t2;
+            t1 = null;
+            t2 = null;
+            foreach (Tvar t in this.prostor.vsechnyTvary()){
+                if (t.getName().Equals(prvniJmeno))
+                    t1 = t;
+                if (t.getName().Equals(druheJmeno))
+                    t2 = t;
+            }
+
+            if(t1==null || t2 == null)
+            {
+                MessageBox.Show("Tvar s tímto jménem neexistuje");
+                return;
+            }
+            prostor.pridejPrusecikyTvaru(t1, t2);
         }
        
         public Vektor[] getVektory()
@@ -74,16 +101,16 @@ namespace InteraktivniGeometrie
             }
         }
 
-        internal void pridejOblouky(string jmeno, string[] oblouky)
+        /*internal void pridejOblouky(string jmeno, string[] oblouky)
         {
             Cara[] obl = new Cara[oblouky.Length / 5];
             for(int i = 0; i<oblouky.Length ; i+=5)
             {
-                obl[i / 3] = new Oblouk(najdiBodPodleJmena(oblouky[i]), najdiBodPodleJmena(oblouky[i + 1]), najdiBodPodleJmena(oblouky[i + 2]), float.Parse(oblouky[i + 3]), float.Parse(oblouky[i + 4]));
+                obl[i / 5] = new Oblouk(najdiBodPodleJmena(oblouky[i]), najdiBodPodleJmena(oblouky[i + 1]), najdiBodPodleJmena(oblouky[i + 2]), float.Parse(oblouky[i + 3]), float.Parse(oblouky[i + 4]));
             }
 
             this.prostor.pridejTvar(new Oblouky_tvar(jmeno, obl));
-        }
+        }*/
 
         public Nakresna(Panel p, ComboBox cbBody, ComboBox cbTvary, int dimenze)
         {

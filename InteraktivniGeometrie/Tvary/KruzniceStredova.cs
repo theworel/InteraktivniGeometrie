@@ -40,8 +40,9 @@ namespace InteraktivniGeometrie.Tvary
             else
                 polomer2 = vodorovnySmer.nakolmiK(polomer);
 
-
-            return new Cara[] { new Oblouk(polomer.posun(stred), polomer2.skaluj(polomer.getDelka() / polomer2.getDelka()).posun(stred), stred, 0, 360) };
+            float r = polomer.getDelka();
+            float normalizer = r * r - stred.getSouradnice()[1] * stred.getSouradnice()[1] - stred.getSouradnice()[0] * stred.getSouradnice()[0];
+            return new Cara[] { new Oblouk(polomer.posun(stred), polomer2.skaluj(polomer.getDelka() / polomer2.getDelka()).posun(stred), stred, 0, 360, new float[] { 1 / normalizer, 0, 1 / normalizer,  -2 * stred.getSouradnice()[0] / normalizer, -2 * stred.getSouradnice()[1] / normalizer }) };
 
 
         }
