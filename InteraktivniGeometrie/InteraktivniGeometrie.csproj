@@ -63,58 +63,68 @@
   <ItemGroup>
     <Compile Include="Bod.cs" />
     <Compile Include="Bod2D.cs" />
+    <Compile Include="Commands\OdeberBod.cs" />
+    <Compile Include="Commands\OdeberPrusecikyCommand.cs" />
+    <Compile Include="Commands\OdeberTvar.cs" />
     <Compile Include="Commands\PosunBodCommand.cs" />
     <Compile Include="Commands\PridejPrusecikyCommand.cs" />
     <Compile Include="Exceptions\BodNeexistujeException.cs" />
     <Compile Include="Cary\Cara.cs" />
     <Compile Include="Exceptions\DuplicitniJmenoException.cs" />
-    <Compile Include="PridejBod_Form.cs">
+    <Compile Include="Exceptions\NemoznyTvarException.cs" />
+    <Compile Include="UI\OdeberPrusecikyForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="PridejBod_Form.Designer.cs">
+    <Compile Include="UI\OdeberPrusecikyForm.Designer.cs">
+      <DependentUpon>OdeberPrusecikyForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\PridejBod_Form.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\PridejBod_Form.Designer.cs">
       <DependentUpon>PridejBod_Form.cs</DependentUpon>
     </Compile>
-    <Compile Include="PridejKruzniciForm.cs">
+    <Compile Include="UI\PridejKruzniciForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="PridejKruzniciForm.Designer.cs">
+    <Compile Include="UI\PridejKruzniciForm.Designer.cs">
       <DependentUpon>PridejKruzniciForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="PridejKruzniciStredemForm.cs">
+    <Compile Include="UI\PridejKruzniciStredemForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="PridejKruzniciStredemForm.Designer.cs">
+    <Compile Include="UI\PridejKruzniciStredemForm.Designer.cs">
       <DependentUpon>PridejKruzniciStredemForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="PridejLomenouCaruForm.cs">
+    <Compile Include="UI\PridejLomenouCaruForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="PridejLomenouCaruForm.Designer.cs">
+    <Compile Include="UI\PridejLomenouCaruForm.Designer.cs">
       <DependentUpon>PridejLomenouCaruForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="PridejObloukForm.cs">
+    <Compile Include="UI\PridejObloukForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="PridejObloukForm.Designer.cs">
+    <Compile Include="UI\PridejObloukForm.Designer.cs">
       <DependentUpon>PridejObloukForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="PridejOhniskovouElipsu.cs">
+    <Compile Include="UI\PridejOhniskovouElipsu.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="PridejOhniskovouElipsu.Designer.cs">
+    <Compile Include="UI\PridejOhniskovouElipsu.Designer.cs">
       <DependentUpon>PridejOhniskovouElipsu.cs</DependentUpon>
     </Compile>
-    <Compile Include="PridejUsecku.cs">
+    <Compile Include="UI\PridejUsecku.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="PridejUsecku.Designer.cs">
+    <Compile Include="UI\PridejUsecku.Designer.cs">
       <DependentUpon>PridejUsecku.cs</DependentUpon>
     </Compile>
     <Compile Include="Exceptions\TvarNeexistujeException.cs" />
-    <Compile Include="PrusecikyForm.cs">
+    <Compile Include="UI\PrusecikyForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="PrusecikyForm.Designer.cs">
+    <Compile Include="UI\PrusecikyForm.Designer.cs">
       <DependentUpon>PrusecikyForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Tvary\EliptickyOblouk.cs" />
@@ -136,7 +146,6 @@
     <Compile Include="Exceptions\NeplatnaUseckaException.cs" />
     <Compile Include="Exceptions\NesouhlasneDimenzeException.cs" />
     <Compile Include="Cary\Oblouk.cs" />
-    <Compile Include="Tvary\Oblouky-tvar.cs" />
     <Compile Include="Commands\PridejBodCommand.cs" />
     <Compile Include="Commands\PridejMnohouhelnikCommand.cs" />
     <Compile Include="Program.cs" />
@@ -152,25 +161,28 @@
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="PridejBod_Form.resx">
+    <EmbeddedResource Include="UI\OdeberPrusecikyForm.resx">
+      <DependentUpon>OdeberPrusecikyForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\PridejBod_Form.resx">
       <DependentUpon>PridejBod_Form.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="PridejKruzniciForm.resx">
+    <EmbeddedResource Include="UI\PridejKruzniciForm.resx">
       <DependentUpon>PridejKruzniciForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="PridejKruzniciStredemForm.resx">
+    <EmbeddedResource Include="UI\PridejKruzniciStredemForm.resx">
       <DependentUpon>PridejKruzniciStredemForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="PridejLomenouCaruForm.resx">
+    <EmbeddedResource Include="UI\PridejLomenouCaruForm.resx">
       <DependentUpon>PridejLomenouCaruForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="PridejObloukForm.resx">
+    <EmbeddedResource Include="UI\PridejObloukForm.resx">
       <DependentUpon>PridejObloukForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="PridejOhniskovouElipsu.resx">
+    <EmbeddedResource Include="UI\PridejOhniskovouElipsu.resx">
       <DependentUpon>PridejOhniskovouElipsu.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="PridejUsecku.resx">
+    <EmbeddedResource Include="UI\PridejUsecku.resx">
       <DependentUpon>PridejUsecku.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -182,7 +194,7 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="PrusecikyForm.resx">
+    <EmbeddedResource Include="UI\PrusecikyForm.resx">
       <DependentUpon>PrusecikyForm.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="ClassDiagram1.cd" />

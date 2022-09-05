@@ -55,6 +55,8 @@
             this.Button_otevri = new System.Windows.Forms.Button();
             this.NovaElipsa_Button = new System.Windows.Forms.Button();
             this.B_pruseciky = new System.Windows.Forms.Button();
+            this.B_ulozJako = new System.Windows.Forms.Button();
+            this.B_odeberPruseciky = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // panel1
@@ -321,11 +323,33 @@
             this.B_pruseciky.UseVisualStyleBackColor = true;
             this.B_pruseciky.Click += new System.EventHandler(this.B_pruseciky_Click);
             // 
+            // B_ulozJako
+            // 
+            this.B_ulozJako.Location = new System.Drawing.Point(1042, 16);
+            this.B_ulozJako.Name = "B_ulozJako";
+            this.B_ulozJako.Size = new System.Drawing.Size(86, 50);
+            this.B_ulozJako.TabIndex = 28;
+            this.B_ulozJako.Text = "Uložit jako";
+            this.B_ulozJako.UseVisualStyleBackColor = true;
+            this.B_ulozJako.Click += new System.EventHandler(this.B_ulozJako_Click);
+            // 
+            // B_odeberPruseciky
+            // 
+            this.B_odeberPruseciky.Location = new System.Drawing.Point(942, 422);
+            this.B_odeberPruseciky.Name = "B_odeberPruseciky";
+            this.B_odeberPruseciky.Size = new System.Drawing.Size(109, 46);
+            this.B_odeberPruseciky.TabIndex = 29;
+            this.B_odeberPruseciky.Text = "Odeber průsečíky";
+            this.B_odeberPruseciky.UseVisualStyleBackColor = true;
+            this.B_odeberPruseciky.Click += new System.EventHandler(this.B_odeberPruseciky_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1196, 480);
+            this.Controls.Add(this.B_odeberPruseciky);
+            this.Controls.Add(this.B_ulozJako);
             this.Controls.Add(this.B_pruseciky);
             this.Controls.Add(this.NovaElipsa_Button);
             this.Controls.Add(this.Button_otevri);
@@ -389,6 +413,8 @@
         private System.Windows.Forms.Button Button_otevri;
         private System.Windows.Forms.Button NovaElipsa_Button;
         private System.Windows.Forms.Button B_pruseciky;
+        private System.Windows.Forms.Button B_ulozJako;
+        private System.Windows.Forms.Button B_odeberPruseciky;
     }
 }
 

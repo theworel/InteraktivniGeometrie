@@ -139,11 +139,11 @@ namespace InteraktivniGeometrie
                     if (uzavrena)
                     {
 
-                        n.zapis(getCommand("PridejiMnohouhelnik"));
+                        
                         n.pridejTvar(TB_jmeno.Text, vsechnyVybraneBody());
                     }
                     else {
-                        n.zapis(getCommand("NakresliCaru"));
+                        
                         n.pridejCaru(TB_jmeno.Text, vsechnyVybraneBody());
                     }
                 this.Close();

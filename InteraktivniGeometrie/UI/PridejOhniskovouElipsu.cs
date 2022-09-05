@@ -58,8 +58,7 @@ namespace InteraktivniGeometrie
 
         private void OK_Button_Click(object sender, EventArgs e)
         {
-            n.zapis("PridejEliptickyOblouk " + CB_ohnisko1.SelectedItem.ToString() + " " + CB_ohnisko2.SelectedItem.ToString() + " " + CB_bod.SelectedItem.ToString() + " " + TB_jmeno.Text);
-            n.pridejEliptickyOblouk(TB_jmeno.Text, new string[] { CB_ohnisko1.SelectedItem.ToString(), CB_ohnisko2.SelectedItem.ToString(), CB_bod.SelectedItem.ToString() });
+            n.pridejEliptickyOblouk(TB_jmeno.Text, new string[] { CB_ohnisko1.SelectedItem.ToString(), CB_ohnisko2.SelectedItem.ToString(), CB_bod.SelectedItem.ToString() }) ;
             this.Close();
         }
 

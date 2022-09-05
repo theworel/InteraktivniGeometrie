@@ -8,6 +8,31 @@ namespace InteraktivniGeometrie.Tvary
 {
     class EliptickyObloukOhniskovy : Tvar
     {
+        private static bool obsahujeDuplicitni(Bod[] body)
+        {
+            for(int i = 0; i < body.Length - 1; i++)
+            {
+                if (body[i].jeStejnyJako(body[body.Length - 1]))
+                    return true;
+            }
+            return false;
+        }
+
+        public string getCommand()
+        {
+            return "PridejEliptickyOblouk " + ohnisko2 + " " + ohnisko2 + " " + dalsi + " " + this.getName();
+        }
+        private static Bod zvolNovyBod(Bod ohnisko1, Bod ohnisko2, float ohniskovaVzdalenost, Vektor kolmySmer)
+        {
+            float a = ohniskovaVzdalenost - ohnisko1.vzdalenostOd(ohnisko2);
+
+            float x = a - a * a / 2 / ohniskovaVzdalenost;
+
+            Vektor smerPosunuti = kolmySmer.nakolmiK(ohnisko1.vektorNaBod(ohnisko2));
+            smerPosunuti = smerPosunuti.skaluj(x / smerPosunuti.getDelka());
+
+            return smerPosunuti.posun(ohnisko2);
+        }
         private string name;
         private Bod ohnisko1, ohnisko2, dalsi;
         private float sweepAngle;
@@ -62,6 +87,10 @@ namespace InteraktivniGeometrie.Tvary
             Bod[] body = new Bod[] { hlavniBod1, hlavniBod2, new Vektor2D(hlavniBod1,stred).skaluj(2).posun(hlavniBod1), new Vektor2D(hlavniBod2, stred).skaluj(2).posun(hlavniBod2), dalsi };
             int i = 0;
             float[][] radky = new float[5][];
+            if (obsahujeDuplicitni(body))
+            {
+                body[4] = zvolNovyBod(ohnisko1, ohnisko2, (float) R, kolmySmer);
+            }
             foreach (Bod c in body)
             {
                 Bod b = c;
@@ -72,7 +101,8 @@ namespace InteraktivniGeometrie.Tvary
 
             float[] normalizovanaRovnice = EliptickyOblouk.vyresSoustavuRovnic(5, radky);
 
-            return new Cara[] { new Oblouk(hlavniBod2, hlavniBod1, stred, stred.vektorNaBod(dalsi).getUhel(hlavniOsa), sweepAngle, normalizovanaRovnice) };
+            return new EliptickyOblouk(stred, body[0], body[1], body[4], kolmySmer, true, "").klicoveCary();
+            //return new Cara[] { new Oblouk(hlavniBod2, hlavniBod1, stred, stred.vektorNaBod(dalsi).getUhel(hlavniOsa), sweepAngle, normalizovanaRovnice) };
         }
 
         public float[] poziceJmena(Vektor vektorX, Vektor vektorY)

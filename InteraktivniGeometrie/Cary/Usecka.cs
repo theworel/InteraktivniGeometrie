@@ -43,6 +43,8 @@ namespace InteraktivniGeometrie
 
                 foreach (Bod kandidat in kandidati)
                 {
+                    bool prvni = obsahujeBod(kandidat);
+                    bool d = druha.obsahujeBod(kandidat);
                     if(obsahujeBod(kandidat) && druha.obsahujeBod(kandidat))
                     {
                         pruseciky.Add(kandidat);
@@ -54,8 +56,8 @@ namespace InteraktivniGeometrie
 
         public bool obsahujeBod(Bod kandidat)
         {
-           return ((kandidat.getSouradnice()[0] > Math.Min(b1.getSouradnice()[0], b2.getSouradnice()[0])) && (kandidat.getSouradnice()[0] < Math.Max(b1.getSouradnice()[0], b2.getSouradnice()[0]))
-                && (kandidat.getSouradnice()[1] > Math.Min(b1.getSouradnice()[1], b2.getSouradnice()[1])) && (kandidat.getSouradnice()[1] < Math.Max(b1.getSouradnice()[1], b2.getSouradnice()[1])));
+           return ((kandidat.getSouradnice()[0] >= Math.Min(b1.getSouradnice()[0], b2.getSouradnice()[0])) && (kandidat.getSouradnice()[0] <= Math.Max(b1.getSouradnice()[0], b2.getSouradnice()[0]))
+                && (kandidat.getSouradnice()[1] >= Math.Min(b1.getSouradnice()[1], b2.getSouradnice()[1])) && (kandidat.getSouradnice()[1] <= Math.Max(b1.getSouradnice()[1], b2.getSouradnice()[1])));
         }
 
         public Vektor getVektor()

@@ -51,7 +51,7 @@ namespace InteraktivniGeometrie
                 float x = float.Parse(TB_X.Text);
                 float y = float.Parse(TB_Y.Text);
                 n.pridejBod(new Bod2D(float.Parse(TB_X.Text), float.Parse(TB_Y.Text), TB_jmeno.Text));
-                n.zapis("PridejBod " + x + " " + y + " " + TB_jmeno.Text);
+                
                 n.VykresliSe();
                 this.Close();
             }

@@ -59,27 +59,45 @@ namespace InteraktivniGeometrie
             poziceJmena = new float[] { this.klicoveBody()[0].projekceDo2D(vektorX, vektorY)[0] + this.klicoveBody()[this.klicoveBody().Length - 1].projekceDo2D(vektorX,vektorY)[0], this.klicoveBody()[0].projekceDo2D(vektorX,vektorY)[1] + this.klicoveBody()[this.klicoveBody().Length - 1].projekceDo2D(vektorX, vektorY)[1]+5 };
             for (int i = 0; i< this.klicoveBody().Length-1; i++)
             {
-                n.nakresliUsecku(new Usecka(this.klicoveBody()[i], this.klicoveBody()[i + 1]));
+                //n.nakresliUsecku(new Usecka(this.klicoveBody()[i], this.klicoveBody()[i + 1]));
+                new Usecka(this.klicoveBody()[i], this.klicoveBody()[i + 1]).vykresliSe(vektorX, vektorY, n.getVektory()[2], n);
             }
-            Console.WriteLine(poziceJmena[0]);
-            Console.WriteLine(poziceJmena[1]);
+            
             Console.WriteLine(this.getName());
             if(nameVisible)
                 n.getG().DrawString(this.getName(), SystemFonts.DefaultFont, Brushes.Black, poziceJmena[0], poziceJmena[1]);
         }
 
-        public void vykresliSe(float[] vektorX, float[] vektorY, Nakresna n)
-        {
-            for (int i = 0; i < this.klicoveBody().Length - 1; i++)
-            {
-                n.nakresliUsecku(new Usecka(this.klicoveBody()[i], this.klicoveBody()[i + 1]));
-            }
-        }
-
+        
         public float[] poziceJmena(Vektor vektorX, Vektor vektorY)
         {
-            float[] poziceJmenaR = new float[] { this.klicoveBody()[0].projekceDo2D(vektorX,vektorY)[0] + this.klicoveBody()[this.klicoveBody().Length - 1].projekceDo2D(vektorX, vektorY)[0], this.klicoveBody()[0].projekceDo2D(vektorX, vektorY)[1] + this.klicoveBody()[this.klicoveBody().Length - 1].projekceDo2D(vektorX, vektorY)[1] + 5 };
-            return poziceJmenaR;
+            float[] ret = new float[] { 0, 0 };
+            foreach (Bod b in body)
+            {
+                ret[0] += b.projekceDo2D(vektorX, vektorY)[0];
+                ret[1] += b.projekceDo2D(vektorX, vektorY)[1];
+
+            }
+
+            ret[0] /= this.body.Length;
+            ret[1] /= this.body.Length;
+
+
+            return ret;
+
+            
+        }
+
+        public string getCommand()
+        {
+            StringBuilder names = new StringBuilder();
+            foreach (Bod b in body)
+            {
+                names.Append(b.getName()+ " ");
+            }
+
+            names.Append(this.getName());
+            return "PridejCaru " + names.ToString();
         }
     }
 }

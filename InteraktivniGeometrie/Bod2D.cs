@@ -106,7 +106,7 @@ namespace InteraktivniGeometrie
             Vektor smer = v.nakolmiK(vektorX);
             Bod projekce = smer.prusecikS(vektorX, this, pocatek);
             return projekce;
-            throw new NotImplementedException();
+            
         }
     }
 }

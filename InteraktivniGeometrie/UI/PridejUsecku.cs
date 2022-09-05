@@ -52,7 +52,7 @@ namespace InteraktivniGeometrie
             try
             {
                 n.pridejCaru(TB_jmeno.Text, new string[] { CB_bod1.SelectedItem.ToString(), CB_bod2.SelectedItem.ToString() });
-                n.zapis("PridejCaru " + CB_bod1.SelectedItem.ToString() + " " + CB_bod2.SelectedItem.ToString() + " " + TB_jmeno.Text);
+                
                 this.Close();
             }
             catch (DuplicitniJmenoException)

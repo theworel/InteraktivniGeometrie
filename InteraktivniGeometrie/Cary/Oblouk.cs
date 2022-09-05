@@ -84,8 +84,13 @@ namespace InteraktivniGeometrie //část elipsy vepsané obdélníku určeném b
 
         public float[] yPodleRovnice(float x)
         {
-            float y1 = -rovniceElipsy[2] + (float)Math.Sqrt(x * x * (rovniceElipsy[2] * rovniceElipsy[2] - 4 * rovniceElipsy[1] * rovniceElipsy[0]) + x * (rovniceElipsy[2] * rovniceElipsy[4] - 4 * rovniceElipsy[1] * rovniceElipsy[3]) + rovniceElipsy[4] * rovniceElipsy[4] - 4 * rovniceElipsy[1] * rovniceElipsy[5]) / 2 * rovniceElipsy[1];
-            float y2 = -rovniceElipsy[2] - (float)Math.Sqrt(x * x * (rovniceElipsy[2] * rovniceElipsy[2] - 4 * rovniceElipsy[1] * rovniceElipsy[0]) + x * (rovniceElipsy[2] * rovniceElipsy[4] - 4 * rovniceElipsy[1] * rovniceElipsy[3]) + rovniceElipsy[4] * rovniceElipsy[4] - 4 * rovniceElipsy[1] * rovniceElipsy[5]) / 2 * rovniceElipsy[1];
+            //this.rovnice je ve tvaru (r1*xx+r2*xy+r3yy+r4x+r5y = 1)
+            //r3*y^2 + (r2x+r5)y + r4x+r1xx-1 = 0
+            //y = (-r2x -r5 +- sqrt((r2x+r5)^2 - 4r3*(r4x+r1x^2 -1)))/2r3 
+            float y1 = -rovniceElipsy[1] - rovniceElipsy[4] + (float)Math.Sqrt((rovniceElipsy[1] * x * x * rovniceElipsy[1] + 2*rovniceElipsy[4]*rovniceElipsy[1]*x + rovniceElipsy[4]*rovniceElipsy[4]) - 4 * rovniceElipsy[2] * (x * rovniceElipsy[3] + x * x * rovniceElipsy[0]-1));
+            y1 /= 2 * rovniceElipsy[2];
+            float y2 = -rovniceElipsy[1] - rovniceElipsy[4] - (float)Math.Sqrt((rovniceElipsy[1] * x * x * rovniceElipsy[1] + 2 * rovniceElipsy[4] * rovniceElipsy[1] * x + rovniceElipsy[4] * rovniceElipsy[4]) - 4 * rovniceElipsy[2] * (x * rovniceElipsy[3] + x * x * rovniceElipsy[0] - 1));
+            y2 /= 2 * rovniceElipsy[2];
             return new float[] { y1, y2 };
         }
 
@@ -103,7 +108,7 @@ namespace InteraktivniGeometrie //část elipsy vepsané obdélníku určeném b
         {
             float[] vyjadriY = druha.rovnice();
 
-            //this.rovnice je ve tvaru (r1*xx+r2*yy+r3xy+r4x+r5y+r6 = 0)
+            //this.rovnice je ve tvaru (r1*xx+r2*yy+r3xy+r4x+r5y = 1)
             //substituci r1*xx + (r2/4d2^2)[(xx*d3^2 - 2xd3(sqrt(xx*(d3^2 -4d2d1) + x(d3d5 - 4d2d4) + d5d5 - 4d2d6)) + xx(d3^2 - 4d2d1)) + x(d3d5 - 4d2d4) + d5^2 - 4d2d6)]+
             //          + r3x * ((-d3 + sqrt((xd3*xd3 + 2xd3d5 + d5*d5 - xx*4d2d1 - 4xd2d4 - 4d2d6)))/2d2 + r4x + r5((-xd3 + sqrt((xd3*xd3 + 2xd3d5 + d5*d5 - xx*4d2d1 - 4xd2d4 - 4d2d6)))/2d2 + r6 = 0
 
@@ -117,23 +122,53 @@ namespace InteraktivniGeometrie //část elipsy vepsané obdélníku určeném b
             List<Bod> pruseciky = new List<Bod>();
 
             Vektor smerZkouseni = new Vektor2D(right, stred);
-            Vektor vektorKolmice = new Vektor2D(stred, top);
-            for (float i = 0; i < this.delkaHlavniPoloosy * 2; i += 0.1F)
+            Vektor vektorKolmice = new Vektor2D(stred, top).nakolmiK(smerZkouseni);
+            bool prvni = true;
+            bool shoda = false;
+            Bod pridavany = new Bod2D(0, 0);
+            for (float i = 0; i < this.delkaHlavniPoloosy * 2; i += 0.01F)
             {
-
+                shoda = false;
                 smerZkouseni = smerZkouseni.skaluj(1 / smerZkouseni.getDelka());
                 Bod kandidat1 = vektorKolmice.prusecikSElipsou(smerZkouseni.skaluj(i).posun(right), this.rovniceElipsy);
                 Bod kandidat2 = vektorKolmice.skaluj(-1).prusecikSElipsou(smerZkouseni.skaluj(i).posun(right), this.rovniceElipsy);
 
                 float[] ySouradniceDruhe = druha.yPodleRovnice(kandidat1.getSouradnice()[0]);
-                if (Math.Abs(ySouradniceDruhe[0] - kandidat1.getSouradnice()[1]) < 0.01 || Math.Abs(ySouradniceDruhe[1] - kandidat1.getSouradnice()[1]) < 0.1)
+                if (Math.Abs(ySouradniceDruhe[0] - kandidat1.getSouradnice()[1]) < 0.1 || Math.Abs(ySouradniceDruhe[1] - kandidat1.getSouradnice()[1]) < 0.1)
                 {
-                    pruseciky.Add(kandidat1);
+                    shoda = true;
+                    if (prvni)
+                    {
+                        pridavany = kandidat1;
+                        prvni = false;
+                    }
+                    else
+                    {
+                        pridavany = kandidat1.stredUsecky(pridavany);
+                    }
+                    //pruseciky.Add(kandidat1);
                 }
-                if (Math.Abs(ySouradniceDruhe[0] - kandidat2.getSouradnice()[1]) < 0.01 || Math.Abs(ySouradniceDruhe[1] - kandidat2.getSouradnice()[1]) < 0.1)
+                ySouradniceDruhe = druha.yPodleRovnice(kandidat2.getSouradnice()[0]);
+                if (Math.Abs(ySouradniceDruhe[0] - kandidat2.getSouradnice()[1]) < 0.1 || Math.Abs(ySouradniceDruhe[1] - kandidat2.getSouradnice()[1]) < 0.1)
                 {
-                    pruseciky.Add(kandidat2);
+                    shoda = true;
+                    if (prvni)
+                    {
+
+                        pridavany = kandidat2;
+                        prvni = false;
+                    }
+                    else
+                    {
+                        pridavany = kandidat2.stredUsecky(pridavany);
+                    }
                 }
+                if (!shoda && !prvni)
+                {
+                    pruseciky.Add(pridavany);
+                    prvni = true;
+                }
+
 
             }
                 return pruseciky.ToArray();
@@ -166,16 +201,14 @@ namespace InteraktivniGeometrie //část elipsy vepsané obdélníku určeném b
         public bool obsahujeBod(Bod kandidat)
         {
             float uhel = stredovyUhel(kandidat, right, stred, new Vektor2D(stred, top), new Vektor2D(stred, right));
-            return (uhel > startAngle && uhel < sweepAngle);
+            return ((uhel > startAngle || uhel < startAngle + sweepAngle - 360) && uhel < sweepAngle + startAngle);
         }
 
         public void vykresliSe(Vektor vektorX, Vektor vektorY, Vektor vektorPosun, Nakresna n)
         {
             System.Drawing.Graphics g = n.getG();
 
-            Console.WriteLine("top: " + top.projekceDo2D(vektorX, vektorY)[0] + " " + top.projekceDo2D(vektorX, vektorY)[1]);
-            Console.WriteLine("right: " + right.projekceDo2D(vektorX, vektorY)[0] + " " + right.projekceDo2D(vektorX, vektorY)[1]);
-            Console.WriteLine("stred: " + stred.projekceDo2D(vektorX, vektorY)[0] + " " + stred.projekceDo2D(vektorX, vektorY)[1]);
+            
             PointF projekceTop = new PointF(top.projekceDo2D(vektorX, vektorY)[0] + vektorPosun.getSouradnice()[0], top.projekceDo2D(vektorX, vektorY)[1] + vektorPosun.getSouradnice()[1]);
             PointF projekceRight = new PointF(right.projekceDo2D(vektorX, vektorY)[0] + vektorPosun.getSouradnice()[0], right.projekceDo2D(vektorX, vektorY)[1] + vektorPosun.getSouradnice()[1]);
             PointF projekceStred = new PointF(stred.projekceDo2D(vektorX, vektorY)[0] + vektorPosun.getSouradnice()[0], stred.projekceDo2D(vektorX, vektorY)[1] + vektorPosun.getSouradnice()[1]);
@@ -183,17 +216,17 @@ namespace InteraktivniGeometrie //část elipsy vepsané obdélníku určeném b
             float height = (float)Math.Sqrt((projekceTop.X - projekceStred.X) * (projekceTop.X - projekceStred.X) + (projekceTop.Y - projekceStred.Y) * (projekceTop.Y - projekceStred.Y)) * 2;
             //float uhel = ((projekceRight.X - projekceStred.X) * vektorX.getSouradnice()[0] + (projekceRight.Y - projekceStred.Y) * vektorX.getSouradnice()[1]); //skalarni soucin vektoru osy elipsy a vektoruX nakresny
 
-            Console.WriteLine("projekceTop: " + projekceTop.X + " " + projekceTop.Y);
-            Console.WriteLine("projekceRight: " + projekceRight.X + " " + projekceRight.Y);
-            Console.WriteLine("projekceStred: " + projekceStred.X + " " + projekceStred.Y);
+            
             float uhel = (projekceRight.X - projekceStred.X);
-            Console.WriteLine("úhel: " + uhel);
+            
             uhel /= vektorX.getDelka();
-            Console.WriteLine(uhel);
-            uhel /= (float)Math.Sqrt((projekceRight.X - projekceStred.X) * (projekceRight.X - projekceStred.X) + (projekceRight.Y - projekceStred.Y) * (projekceRight.Y - projekceStred.Y));
-            Console.WriteLine("acos(" + uhel);
+           
+            uhel /= (float)Math.Sqrt((projekceRight.X - projekceStred.X) * (projekceRight.X - projekceStred.X) + (projekceRight.Y - projekceStred.Y) * (projekceRight.Y - projekceStred.Y)); //
+            
             uhel = (float)Math.Acos(uhel) * 180 / (float)Math.PI;
-            Console.WriteLine("velikost uhlu: " + uhel);
+            if (projekceRight.Y - projekceStred.Y < 0)
+                uhel = 360 - uhel;
+           
             try
             {
                 g.TranslateTransform(projekceStred.X, projekceStred.Y);
@@ -222,27 +255,23 @@ namespace InteraktivniGeometrie //část elipsy vepsané obdélníku určeném b
         {
             System.Drawing.Graphics g = n.getG();
 
-            Console.WriteLine("top: " + top.projekceDo2D(vektorX, vektorY)[0] + " " + top.projekceDo2D(vektorX, vektorY)[1]);
-            Console.WriteLine("right: " + right.projekceDo2D(vektorX, vektorY)[0] + " " + right.projekceDo2D(vektorX, vektorY)[1]);
-            Console.WriteLine("stred: " + stred.projekceDo2D(vektorX, vektorY)[0] + " " + stred.projekceDo2D(vektorX, vektorY)[1]);
+           
             PointF projekceTop = new PointF(top.projekceDo2D(vektorX, vektorY)[0] + vektorPosun.getSouradnice()[0], top.projekceDo2D(vektorX, vektorY)[1] + vektorPosun.getSouradnice()[1]);
             PointF projekceRight = new PointF(right.projekceDo2D(vektorX, vektorY)[0] + vektorPosun.getSouradnice()[0], right.projekceDo2D(vektorX, vektorY)[1] + vektorPosun.getSouradnice()[1]);
             PointF projekceStred = new PointF(stred.projekceDo2D(vektorX, vektorY)[0] + vektorPosun.getSouradnice()[0], stred.projekceDo2D(vektorX, vektorY)[1] + vektorPosun.getSouradnice()[1]);
             float width = (float)Math.Sqrt((projekceRight.X - projekceStred.X) * (projekceRight.X - projekceStred.X) + (projekceRight.Y - projekceStred.Y) * (projekceRight.Y - projekceStred.Y)) * 2;
             float height = (float)Math.Sqrt((projekceTop.X - projekceStred.X) * (projekceTop.X - projekceStred.X) + (projekceTop.Y - projekceStred.Y) * (projekceTop.Y - projekceStred.Y)) * 2;
-            //float uhel = ((projekceRight.X - projekceStred.X) * vektorX.getSouradnice()[0] + (projekceRight.Y - projekceStred.Y) * vektorX.getSouradnice()[1]); //skalarni soucin vektoru osy elipsy a vektoruX nakresny
-
-            Console.WriteLine("projekceTop: " + projekceTop.X + " " + projekceTop.Y);
-            Console.WriteLine("projekceRight: " + projekceRight.X + " " + projekceRight.Y);
-            Console.WriteLine("projekceStred: " + projekceStred.X + " " + projekceStred.Y);
+           
             float uhel = (projekceRight.X - projekceStred.X);
-            Console.WriteLine("úhel: " + uhel);
+            
             uhel /= vektorX.getDelka();
-            Console.WriteLine(uhel);
+            
             uhel /= (float)Math.Sqrt((projekceRight.X - projekceStred.X) * (projekceRight.X - projekceStred.X) + (projekceRight.Y - projekceStred.Y) * (projekceRight.Y - projekceStred.Y));
-            Console.WriteLine("acos(" + uhel);
+           
             uhel = (float)Math.Acos(uhel) * 180 / (float)Math.PI;
-            Console.WriteLine("velikost uhlu: " + uhel);
+            
+            if (projekceRight.Y - projekceStred.Y < 0)
+                uhel = 360 - uhel;
             try
             {
                 g.TranslateTransform(projekceStred.X, projekceStred.Y);

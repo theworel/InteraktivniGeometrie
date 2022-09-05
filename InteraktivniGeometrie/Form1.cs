@@ -30,6 +30,9 @@ namespace InteraktivniGeometrie
             allCommands.Add(new PridejKruzniciCommand());
             allCommands.Add(new PridejEliptickyObloukCommand());
             allCommands.Add(new PosunBodCommand());
+            allCommands.Add(new PridejPrusecikyCommand());
+            allCommands.Add(new OdeberBod());
+            allCommands.Add(new OdeberTvar());
             B_posunBodDoleva.Enabled = false;
             B_posunBodDolu.Enabled = false;
             B_posunBodDoprava.Enabled = false;
@@ -118,7 +121,7 @@ namespace InteraktivniGeometrie
                     try
                     {
                         c.exec(args, n);
-                        n.zapis(command);
+                       
                         n.VykresliSe();
                     }
                     catch (SpatneArgumentyPrikazuException)
@@ -284,6 +287,23 @@ namespace InteraktivniGeometrie
         private void B_pruseciky_Click(object sender, EventArgs e)
         {
             new PrusecikyForm(n).Show();
+        }
+
+        private void B_ulozJako_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog dialog = new SaveFileDialog();
+
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+
+                this.textFile = Path.GetFullPath(dialog.FileName);
+            }
+            File.WriteAllLines(textFile, n.getHistory());
+        }
+
+        private void B_odeberPruseciky_Click(object sender, EventArgs e)
+        {
+            new InteraktivniGeometrie.UI.OdeberPrusecikyForm(n).Show();
         }
     }
 }

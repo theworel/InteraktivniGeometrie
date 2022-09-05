@@ -48,16 +48,26 @@ namespace InteraktivniGeometrie
             {
                 ret[0] += b.projekceDo2D(vektorX, vektorY)[0];
                 ret[1] += b.projekceDo2D(vektorX, vektorY)[1];
-                Console.WriteLine(ret[0]);
-                Console.WriteLine(ret[1]);
+                
             }
 
             ret[0] /= this.body.Length;
             ret[1] /= this.body.Length;
             
-            Console.WriteLine(ret[0]);
-            Console.WriteLine(ret[1]);
+            
             return ret;
+        }
+
+        public string getCommand()
+        {
+            string[] names = new string[body.Length+1];
+            int i = 0;
+            foreach (Bod b in body) {
+                names[i] = b.getName();
+                i++;
+            }
+            names[body.Length] = this.getName();
+            return string.Join(" ", "PridejMnohouhelnik", names);
         }
     }
 }

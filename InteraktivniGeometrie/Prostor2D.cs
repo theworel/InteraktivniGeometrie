@@ -13,13 +13,13 @@ namespace InteraktivniGeometrie
         private List<Tvar> tvary;
         private Dictionary<Bod,List<Tvar>> prislusnosti;
        
-        private Dictionary<Tvar, List<Bod>> prusecikyTvaru;
+        
         public Prostor2D()
         {
             this.body = new List<Bod>();
             this.tvary = new List<Tvar>();
             this.prislusnosti = new Dictionary<Bod, List<Tvar>>();
-            this.prusecikyTvaru = new Dictionary<Tvar, List<Bod>>();
+            
             this.pocetPruseciku = 0;
         }
 
@@ -50,7 +50,7 @@ namespace InteraktivniGeometrie
             foreach(Bod b in t.klicoveBody()){
                 prislusnosti[b].Add(t);
             }
-            prusecikyTvaru.Add(t, new List<Bod>());
+            
         }
 
         public Tvar[] tvarySTimtoBodem(Bod b)
@@ -64,14 +64,7 @@ namespace InteraktivniGeometrie
             throw new BodNeexistujeException();
         }
 
-        public Bod[] bodyZavisleNaTvaru(Tvar tvar)
-        {
-            List<Bod> ret = new List<Bod>();
-            if (prusecikyTvaru.TryGetValue(tvar,out ret))
-                return ret.ToArray();
-
-            throw new Exception();
-        }
+        
 
         public Bod[] vsechnyBody()
         {
@@ -95,10 +88,7 @@ namespace InteraktivniGeometrie
 
         public void odeberTvar(Tvar t)
         {
-            foreach(Bod b in bodyZavisleNaTvaru(t))
-            {
-                odeberBod(b);
-            }
+            
             this.tvary.Remove(t);
         }
 
@@ -110,8 +100,7 @@ namespace InteraktivniGeometrie
               {
                  Bod pojmenovany = new Bod2D(prusecik.getSouradnice()[0], prusecik.getSouradnice()[1], true, pocetPruseciku);
                  this.pridejBod(pojmenovany);
-                 prusecikyTvaru[t1].Add(pojmenovany);
-                 prusecikyTvaru[t2].Add(pojmenovany);
+                
                  pocetPruseciku++;
               }
                 

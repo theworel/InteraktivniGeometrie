@@ -8,22 +8,50 @@ using System.Collections.Generic;
 
 namespace InteraktivniGeometrie
 {
-    
+    /**
+     * Třída, která tvoří rozhraní mezi uživatelem a vnitřní implmentací prostoru.
+     * jejím úkolem je zobrazovat konstrukci v prostoru na obrazovku a provádět překlad mezi uživatelským vstupem (z textového vstupu i z UI) a vnitřní implementací geometrické konstrukce
+    **/
     public class Nakresna
     {
+        /*
+         * panel, na který je kresleno, hlavní grafický výstup celého programu
+         * **/
         private Panel panel;
         private static System.Drawing.Graphics g;
+        /**
+         * vektory určující otočení a posunutí zobrazované plochy
+         * **/
         private Vektor vektorX;
         private Vektor vektorY;
         private Vektor vektorPosun;
-        private float otoceni;
+
+        /**
+         * Prostor obsahující geometrickou konstrukci tak, jak ji vidí program
+         * **/
         private Prostor prostor;
+        /**
+         * Počet dimenzí, v současnosti musí být 2
+         * ¨**/
         private int dimenze;
+
+        /**
+         * Zvolený bod pro posouvání či mazání uživatelem
+         * **/
         private Bod selected;
+        private Tvar selectedTvar;
+
+        /**
+         * Comboboxy pro změnu vybraného tvaru/bodu
+         * **/
         private ComboBox comboBoxBody;
         private ComboBox comboBoxTvary;
-        private Tvar selectedTvar;
-        private List<String> history;
+        
+
+        /**
+         * Seznam tvaru, jejichž průsečíky mají být zobrazeny
+         * **/
+        private List<Tuple<String, String>> bodySPruseciky;
         
 
         public Graphics getG()
@@ -36,6 +64,7 @@ namespace InteraktivniGeometrie
             return this.selected.getName();
         }
 
+        
         internal void nakresliPruseciky(string v1, string v2)
         {
             foreach (Bod b in prostor.najdiPrusecikyTvaru(najdiTvarPodleJmena(v1), najdiTvarPodleJmena(v2))){
@@ -43,14 +72,33 @@ namespace InteraktivniGeometrie
             }
         }
 
+        /**
+         * Funkce vracející textový zápis konstrukce takový, aby z něj celá konstrukce mohla být rekonstruována
+         * **/
         public string[] getHistory()
         {
-            return this.history.ToArray();
+            List<string> ret = new List<string>();
+
+            foreach(Bod b in this.prostor.vsechnyVolneBody())
+            {
+                ret.Add("PridejBod " + b.getSouradnice()[0] + " " + b.getSouradnice()[1] + " " + b.getName());
+            }
+
+            foreach(Tvar t in this.prostor.vsechnyTvary())
+            {
+                ret.Add(t.getCommand());
+            }
+
+            foreach(Tuple<string, string> t in this.bodySPruseciky)
+            {
+                ret.Add("PridejPruseciky " + t.Item1 + " " + t.Item2);
+            }
+            return ret.ToArray();
         }
 
         public void pridejPruseciky(string prvniJmeno, string druheJmeno)
         {
-            Tvar t1, t2;
+            /*Tvar t1, t2;
             t1 = null;
             t2 = null;
             foreach (Tvar t in this.prostor.vsechnyTvary()){
@@ -64,8 +112,9 @@ namespace InteraktivniGeometrie
             {
                 MessageBox.Show("Tvar s tímto jménem neexistuje");
                 return;
-            }
-            prostor.pridejPrusecikyTvaru(t1, t2);
+            }*/
+            this.bodySPruseciky.Add(new Tuple<string, string>(prvniJmeno, druheJmeno));
+            //prostor.pridejPrusecikyTvaru(t1, t2);
         }
        
         public Vektor[] getVektory()
@@ -101,16 +150,7 @@ namespace InteraktivniGeometrie
             }
         }
 
-        /*internal void pridejOblouky(string jmeno, string[] oblouky)
-        {
-            Cara[] obl = new Cara[oblouky.Length / 5];
-            for(int i = 0; i<oblouky.Length ; i+=5)
-            {
-                obl[i / 5] = new Oblouk(najdiBodPodleJmena(oblouky[i]), najdiBodPodleJmena(oblouky[i + 1]), najdiBodPodleJmena(oblouky[i + 2]), float.Parse(oblouky[i + 3]), float.Parse(oblouky[i + 4]));
-            }
-
-            this.prostor.pridejTvar(new Oblouky_tvar(jmeno, obl));
-        }*/
+       
 
         public Nakresna(Panel p, ComboBox cbBody, ComboBox cbTvary, int dimenze)
         {
@@ -118,53 +158,19 @@ namespace InteraktivniGeometrie
             this.vektorX = new Vektor2D (1, 0);
             this.vektorY = new Vektor2D ( 0, 1 );
             this.vektorPosun = new Vektor2D ( panel.Width/2, panel.Height/2);
-            otoceni = 0;
-            g = panel.CreateGraphics();
-            prostor = new Prostor2D();
-            this.dimenze = dimenze;
-            cbBody.Items.Clear();
-            cbTvary.Items.Clear();
-            this.comboBoxBody = cbBody;
-            cbBody.Items.Add("");
-            this.comboBoxTvary = cbTvary;
-            cbTvary.Items.Add("");
-            this.history = new List<String>();
-
-        }
-
-        public Nakresna(Panel p, ComboBox cbBody, ComboBox cbTvary, int dimenze, List<String> history)
-        {
-            this.panel = p;
-            this.vektorX = new Vektor2D(1, 0);
-            this.vektorY = new Vektor2D(0, 1);
-            this.vektorPosun = new Vektor2D(panel.Width / 2, panel.Height / 2);
-            otoceni = 0;
-            g = panel.CreateGraphics();
-            prostor = new Prostor2D();
-            this.dimenze = dimenze;
-            cbBody.Items.Clear();
-            cbTvary.Items.Clear();
-            this.comboBoxBody = cbBody;
-            cbBody.Items.Add("");
-            this.comboBoxTvary = cbTvary;
-            cbTvary.Items.Add("");
-            this.history = history;
-
-        }
-
-
-
-
-        public void nakresliUsecku(Usecka u)
-        {
-            /*float[] poziceA = a.projekceDo2D(vektorX, vektorY);
-            float[] poziceB = b.projekceDo2D(vektorX, vektorY);
-
-            g.DrawLine(System.Drawing.Pens.Black, poziceA[0] + vektorPosun[0], poziceA[1] + vektorPosun[1] , poziceB[0] + vektorPosun[0] , poziceB[1] + vektorPosun[1]);
-            */
-            float[,] vektory = new float[2, 2];
             
-            u.vykresliSe(vektorX, vektorY, vektorPosun, this);
+            g = panel.CreateGraphics();
+            prostor = new Prostor2D();
+            this.dimenze = dimenze;
+            cbBody.Items.Clear();
+            cbTvary.Items.Clear();
+            this.comboBoxBody = cbBody;
+            cbBody.Items.Add("");
+            this.comboBoxTvary = cbTvary;
+            cbTvary.Items.Add("");
+            
+            this.bodySPruseciky = new List<Tuple<string, string>>();
+
         }
 
         public void nakresliBod(Bod b)
@@ -184,11 +190,31 @@ namespace InteraktivniGeometrie
             g.DrawString(b.getName(), System.Drawing.SystemFonts.DefaultFont, System.Drawing.Brushes.Black, pozice[0] + 5+vektorPosun.getSouradnice()[0], pozice[1] + 5+vektorPosun.getSouradnice()[1]);
         }
 
-        internal void zapis(string command)
+        public void nakresliBod(Bod b, string jmeno)
         {
-            history.Add(command);
-
+            float[] pozice = b.projekceDo2D(vektorX, vektorY);
+            if (selected != null)
+            {
+                if (b.getName() == selected.getName())
+                    g.DrawEllipse(System.Drawing.Pens.Red, pozice[0] - 5 + vektorPosun.getSouradnice()[0], pozice[1] - 5 + vektorPosun.getSouradnice()[1], 10, 10);
+                else
+                    g.DrawEllipse(System.Drawing.Pens.Black, pozice[0] - 5 + vektorPosun.getSouradnice()[0], pozice[1] - 5 + vektorPosun.getSouradnice()[1], 10, 10);
+            }
+            else
+            {
+                g.DrawEllipse(System.Drawing.Pens.Black, pozice[0] - 5 + vektorPosun.getSouradnice()[0], pozice[1] - 5 + vektorPosun.getSouradnice()[1], 10, 10);
+            }
+            g.DrawString(jmeno, System.Drawing.SystemFonts.DefaultFont, System.Drawing.Brushes.Black, pozice[0] + 5 + vektorPosun.getSouradnice()[0], pozice[1] + 5 + vektorPosun.getSouradnice()[1]);
         }
+
+        /*internal void zapis(string command)
+        {
+           
+
+        }*/
+
+            /**
+             * Aktualizuje komponentu panel tak, aby odpovídala konstrukci v Prostoru**/
 
         public void VykresliSe()
         {
@@ -209,18 +235,30 @@ namespace InteraktivniGeometrie
                         c.vykresliSe(vektorX, vektorY, vektorPosun, this);
                     else
                         c.vykresliSeSBarvou(vektorX, vektorY, vektorPosun, this, Pens.Red);
-                    //Console.WriteLine("jmeno: " + c.getName());
+                   
                     
                 }
-                //Console.WriteLine("pozice jmena: " + poziceJmena[0] + " " + poziceJmena[1]);
+                
                 if(!t.Equals(selectedTvar))
                     g.DrawString(t.getName(), System.Drawing.SystemFonts.DefaultFont, System.Drawing.Brushes.Black, poziceJmena[0]+vektorPosun.getSouradnice()[0], poziceJmena[1]+vektorPosun.getSouradnice()[1]);
                 else
                     g.DrawString(t.getName(), System.Drawing.SystemFonts.DefaultFont, System.Drawing.Brushes.Red, poziceJmena[0] + vektorPosun.getSouradnice()[0], poziceJmena[1] + vektorPosun.getSouradnice()[1]);
             }
+            int i = 1;
+            foreach(Tuple<string, string> t in this.bodySPruseciky)
+            {
+                foreach(Bod b in prostor.najdiPrusecikyTvaru(najdiTvarPodleJmena(t.Item1),najdiTvarPodleJmena(t.Item2))){
+                    nakresliBod(b, "prusecik "+ i);
+                    i++;
+                    
+                }
+            }
 
         }
 
+        /**
+         * Přeloží jméno bodu na konkrétní instanci třídy Bod v Prostoru
+         * **/
         public Bod najdiBodPodleJmena(string name)
         {
             foreach(Bod b in this.prostor.vsechnyBody())
@@ -234,7 +272,9 @@ namespace InteraktivniGeometrie
         }
 
         
-
+        /**
+         * Přeloží jméno tvaru na konkrétní instanci tvaru v Prostoru
+         * **/
         public Tvar najdiTvarPodleJmena(string name)
         {
             foreach(Tvar t in this.prostor.vsechnyTvary())
@@ -248,6 +288,9 @@ namespace InteraktivniGeometrie
             throw new TvarNeexistujeException();
         }
 
+        /**
+         * Přidá nový bod do prostoru
+         * **/
         public void pridejBod(Bod b)
         {
             foreach (Bod p in this.prostor.vsechnyBody())
@@ -264,6 +307,9 @@ namespace InteraktivniGeometrie
             comboBoxBody.Items.Add(b.getName());
         }
 
+        /**
+         * Smaže bod se zadaným jménem z prostoru
+         * **/
         public void odeberBod(string jmeno)
         {
             
@@ -281,6 +327,10 @@ namespace InteraktivniGeometrie
 
         }
 
+        /**
+         * Smaže tvar s danným jménem z prostoru
+         * **/
+
         public void odeberTvar(string jmeno)
         {
             this.prostor.odeberTvar(najdiTvarPodleJmena(jmeno));
@@ -289,6 +339,9 @@ namespace InteraktivniGeometrie
             this.VykresliSe();
         }
 
+        /**
+         * Přidá do prostoru tvar typu PrimaCara
+         * **/
         public void pridejCaru(string jmeno, string[] jmenaBodu)
         {
             foreach (Tvar t in this.prostor.vsechnyTvary())
@@ -314,6 +367,10 @@ namespace InteraktivniGeometrie
             this.prostor.pridejTvar(new PrimaCara(jmeno, bodyNaCare));
             comboBoxTvary.Items.Add(jmeno);
         }
+
+        /**
+         * Přidá do prostoru tvar typu Mnohoúhelník
+         * **/
 
         public void pridejTvar(string jmeno, string[] jmenaBodu)
         {
@@ -343,7 +400,9 @@ namespace InteraktivniGeometrie
         }
 
         
-
+        /**
+         * Přidá do prostoru tvar typu Kruznice
+         * **/
         public void pridejKruznici(string jmeno, string[] jmenaBodu)
         {
             foreach (Tvar t in this.prostor.vsechnyTvary())
@@ -361,6 +420,9 @@ namespace InteraktivniGeometrie
             comboBoxTvary.Items.Add(jmeno);
         }
 
+        /**
+         * Změní vektor posun, posune tedy vše zobrazené na panelu
+         * **/
         public void posun(float[] p)
         {
             if (this.dimenze == 2)
@@ -369,12 +431,18 @@ namespace InteraktivniGeometrie
             }
         }
 
+        /**
+         * Otočí vše zobrazené na panelu o daný úhel
+         * **/
         public void otoc(float uhel)
         {
             this.vektorX.otoc(vektorY, uhel);
             this.vektorY.otoc(vektorX, uhel);
         }
 
+        /**
+         * Vrátí jména všech bodů v prostoru
+         * */
         public string[] getJmenaVsechBodu()
         {
 
@@ -386,6 +454,8 @@ namespace InteraktivniGeometrie
             return ret;
         }
 
+        /**
+         * Vrátí jména všech bodů, které nejsou prúsečíky**/
         public string[] getJmenaVsechVolnychBodu()
         {
             string[] ret = new string[this.prostor.vsechnyBody().Length];
@@ -396,6 +466,9 @@ namespace InteraktivniGeometrie
             return ret;
         }
 
+        /**
+         * Vrátí jména všech tvarů v prostoru
+         * **/
         public string[] getJmenaVsechTvaru()
         {
             string[] ret = new string[this.prostor.vsechnyTvary().Length];
@@ -406,6 +479,9 @@ namespace InteraktivniGeometrie
             return ret;
         }
 
+        /**
+         * Změní, který z bodů je vybraný pro ovládání uživatelem
+         * **/
         public void vyberBod(string jmeno)
         {
             if (jmeno.Length == 0)
@@ -424,6 +500,9 @@ namespace InteraktivniGeometrie
             }
         }
 
+        /**
+         * Změní, který z tvarů je vybraný pro ovládání uživatelem
+         * **/
         public void vyberTvar(string jmeno)
         {
             if(jmeno.Length == 0)
@@ -443,6 +522,9 @@ namespace InteraktivniGeometrie
             }
         }
 
+        /**
+         * Posune vybraný bod (změní jeho souřadnice v Prostoru)
+         * **/
         public void posunVybranyBod(float X, float Y)
         {
             if (selected != null)
@@ -481,7 +563,16 @@ namespace InteraktivniGeometrie
            
             this.VykresliSe();
         }
-        
+
+        internal Tuple<string,string>[] getPruseciky()
+        {
+            return this.bodySPruseciky.ToArray();
+        }
+
+        internal void odeberPruseciky(Tuple<string, string> selectedItem)
+        {
+            this.bodySPruseciky.Remove(selectedItem);
+        }
     }
 
     

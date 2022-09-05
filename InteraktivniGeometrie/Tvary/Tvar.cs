@@ -13,5 +13,6 @@ namespace InteraktivniGeometrie
         Cara[] klicoveCary();
         string getName();
         float[] poziceJmena(Vektor vektorX, Vektor vektorY);
+        string getCommand();
     }
 }

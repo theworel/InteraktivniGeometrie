@@ -51,5 +51,10 @@ namespace InteraktivniGeometrie.Tvary
         {
             return stred.projekceDo2D(vektorX, vektorY);
         }
+
+        public string getCommand()
+        {
+            return "PridejKruznici " + stred.getName() + " " + druhy.getName() + " " + this.getName();
+        }
     }
 }

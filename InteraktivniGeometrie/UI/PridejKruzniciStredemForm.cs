@@ -46,8 +46,7 @@ namespace InteraktivniGeometrie
 
         private void Button_OK_Click(object sender, EventArgs e)
         {
-            n.zapis("PridejKruznici " + CB_stred.SelectedItem.ToString() + " " + CB_bod.SelectedItem.ToString() + " " + TB_jmeno.Text);
-            n.pridejKruznici(TB_jmeno.Text, new string[] { CB_stred.SelectedItem.ToString(), CB_bod.SelectedItem.ToString() });
+            
             this.Close();
         }
 

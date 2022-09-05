@@ -106,7 +106,7 @@ namespace InteraktivniGeometrie
             try
             {
                 n.pridejEliptickyOblouk(TB_jmeno.Text, new string[] { CB_stred.SelectedItem.ToString(), CB_dalsi.SelectedItem.ToString(), CB_B1.SelectedItem.ToString(), CB_B2.SelectedItem.ToString() });
-                n.zapis("PridejEliptickyOblouk " + CB_stred.SelectedItem.ToString() + " " + CB_dalsi.SelectedItem.ToString() + " " + CB_B1.SelectedItem.ToString() + " " + CB_B2.SelectedItem.ToString() + " " + TB_jmeno.Text);
+               
                 this.Close();
             }
             catch (DuplicitniJmenoException)

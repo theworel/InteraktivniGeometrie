@@ -25,7 +25,7 @@ namespace InteraktivniGeometrie
 
         private void B_OK_Click(object sender, EventArgs e)
         {
-            n.zapis("PridejPruseciky " + CB_tvar1.SelectedItem.ToString() + " " + CB_tvar2.SelectedItem.ToString());
+           
             n.nakresliPruseciky(CB_tvar1.SelectedItem.ToString(), CB_tvar2.SelectedItem.ToString());
             n.pridejPruseciky(CB_tvar1.SelectedItem.ToString(), CB_tvar2.SelectedItem.ToString());
             n.VykresliSe();
